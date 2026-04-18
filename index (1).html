@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TRACKWATCH — Elephant Collision Prevention</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;700&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  /* ─── RESET & BASE ─────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #060d08;
+    --bg2:       #0c1a0f;
+    --bg3:       #111f14;
+    --border:    #1e3322;
+    --green:     #2dbe6c;
+    --green-dim: #1a7340;
+    --amber:     #e8a020;
+    --red:       #e03030;
+    --red-dim:   #7a1515;
+    --teal:      #38c4b8;
+    --text:      #d4e8d8;
+    --text-dim:  #6a9070;
+    --mono:      'Roboto Mono', monospace;
+    --display:   'Bebas Neue', sans-serif;
+    --body:      'Inter', sans-serif;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 14px;
+    overflow: hidden;
+  }
+
+  /* ─── LAYOUT ───────────────────────────────────────────────── */
+  .app {
+    display: grid;
+    grid-template-rows: 48px 1fr 52px;
+    height: 100vh;
+  }
+
+  /* ─── TOPBAR ───────────────────────────────────────────────── */
+  .topbar {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    gap: 24px;
+  }
+
+  .logo {
+    font-family: var(--display);
+    font-size: 26px;
+    letter-spacing: 3px;
+    color: #fff;
+    user-select: none;
+  }
+  .logo span { color: var(--green); }
+
+  .divider { width: 1px; height: 24px; background: var(--border); }
+
+  .subtitle {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .topbar-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+  .pill-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .pill.ok    { border-color: var(--green-dim); color: var(--green); }
+  .pill.ok .pill-dot { background: var(--green); }
+  .pill.warn  { border-color: #6b4a00; color: var(--amber); }
+  .pill.warn .pill-dot { background: var(--amber); animation: pulse-amber 1.5s infinite; }
+
+  @keyframes pulse-amber {
+    0%,100% { opacity: 1; } 50% { opacity: 0.3; }
+  }
+
+  /* ─── MAIN CONTENT ─────────────────────────────────────────── */
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    overflow: hidden;
+  }
+
+  /* ─── VIDEO PANEL ──────────────────────────────────────────── */
+  .video-panel {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border);
+    background: var(--bg);
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+  }
+
+  .panel-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  .live-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--red);
+    letter-spacing: 1px;
+  }
+  .live-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--red);
+    animation: pulse-red 1s infinite;
+  }
+  @keyframes pulse-red {
+    0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(224,48,48,.6); }
+    50%      { opacity: .8; box-shadow: 0 0 0 5px rgba(224,48,48,0); }
+  }
+
+  .video-wrap {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: #000;
+  }
+
+  /* ── STREAM MODE: set STREAM_MODE to true when real link is ready ── */
+  .video-wrap iframe,
+  .video-wrap video {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  /* scanline overlay */
+  .scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,.08) 2px,
+      rgba(0,0,0,.08) 4px
+    );
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* corner brackets */
+  .corner {
+    position: absolute;
+    width: 20px; height: 20px;
+    border-color: var(--teal);
+    border-style: solid;
+    z-index: 3;
+    opacity: .7;
+  }
+  .corner.tl { top: 12px; left: 12px; border-width: 2px 0 0 2px; }
+  .corner.tr { top: 12px; right: 12px; border-width: 2px 2px 0 0; }
+  .corner.bl { bottom: 12px; left: 12px; border-width: 0 0 2px 2px; }
+  .corner.br { bottom: 12px; right: 12px; border-width: 0 2px 2px 0; }
+
+  /* hud overlay */
+  .hud {
+    position: absolute;
+    bottom: 12px; left: 14px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: rgba(56,196,184,.8);
+    line-height: 1.8;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .hud-right {
+    position: absolute;
+    bottom: 12px; right: 14px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: rgba(56,196,184,.6);
+    text-align: right;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  /* ─── RIGHT SIDEBAR ────────────────────────────────────────── */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg2);
+    overflow: hidden;
+  }
+
+  /* alarm card */
+  .alarm-card {
+    padding: 24px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    transition: background .4s;
+  }
+  .alarm-card.clear  { background: rgba(45,190,108,.05); }
+  .alarm-card.hazard { background: rgba(224,48,48,.08); animation: flash-bg 1s infinite; }
+
+  @keyframes flash-bg {
+    0%,100% { background: rgba(224,48,48,.08); }
+    50%      { background: rgba(224,48,48,.18); }
+  }
+
+  .alarm-icon { font-size: 36px; line-height: 1; }
+
+  .alarm-status {
+    font-family: var(--display);
+    font-size: 32px;
+    letter-spacing: 3px;
+    text-align: center;
+  }
+  .alarm-card.clear  .alarm-status { color: var(--green); }
+  .alarm-card.hazard .alarm-status { color: var(--red); }
+
+  .alarm-sub {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-align: center;
+  }
+
+  .alarm-temp {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--amber);
+    display: none;
+  }
+  .alarm-card.hazard .alarm-temp { display: block; }
+
+  /* demo toggle */
+  .demo-toggle {
+    margin-top: 6px;
+    padding: 6px 14px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all .2s;
+  }
+  .demo-toggle:hover { border-color: var(--amber); color: var(--amber); }
+
+  /* thermal grid */
+  .thermal-section {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .thermal-grid {
+    display: grid;
+    grid-template-columns: repeat(8,1fr);
+    gap: 2px;
+    width: 100%;
+  }
+  .thermal-cell {
+    aspect-ratio: 1;
+    border-radius: 2px;
+    transition: background .3s;
+  }
+
+  /* detection log */
+  .log-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 12px 16px;
+  }
+  .log-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .log-recording {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--red);
+    letter-spacing: 1px;
+    animation: blink 1.2s infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  .log-list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .log-list::-webkit-scrollbar { width: 3px; }
+  .log-list::-webkit-scrollbar-track { background: transparent; }
+  .log-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .log-entry {
+    padding: 7px 10px;
+    background: var(--bg3);
+    border-left: 2px solid transparent;
+    font-family: var(--mono);
+    font-size: 10px;
+    line-height: 1.6;
+    color: var(--text-dim);
+    border-radius: 0 3px 3px 0;
+  }
+  .log-entry.alert { border-left-color: var(--red); color: var(--text); }
+  .log-entry.info  { border-left-color: var(--green-dim); }
+  .log-entry .log-time { color: var(--amber); margin-right: 6px; }
+
+  /* ─── BOTTOM BAR ───────────────────────────────────────────── */
+  .bottombar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+
+  .bottom-tabs {
+    display: flex;
+    gap: 0;
+    height: 100%;
+  }
+  .btab {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0 18px;
+    border-right: 1px solid var(--border);
+    cursor: pointer;
+    transition: color .2s, background .2s;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .btab:hover { background: var(--bg3); color: var(--text); }
+  .btab.active { color: var(--green); border-bottom: 2px solid var(--green); }
+
+  .bottombar-right {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .stat { display: flex; gap: 6px; }
+  .stat-label { color: var(--text-dim); }
+  .stat-val { color: var(--teal); }
+
+  /* ─── HAZARD OVERLAY on video ─────────────────────────────── */
+  .hazard-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .3s;
+  }
+  .hazard-overlay.visible { opacity: 1; }
+  .hazard-box {
+    border: 2px solid var(--red);
+    padding: 16px 32px;
+    background: rgba(224,48,48,.15);
+    text-align: center;
+    animation: flash-border 1s infinite;
+  }
+  @keyframes flash-border {
+    0%,100% { border-color: var(--red); box-shadow: 0 0 20px rgba(224,48,48,.5); }
+    50%      { border-color: rgba(224,48,48,.4); box-shadow: none; }
+  }
+  .hazard-box .hb-title {
+    font-family: var(--display);
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: var(--red);
+  }
+  .hazard-box .hb-sub {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: rgba(255,255,255,.7);
+    margin-top: 6px;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ══ TOPBAR ══════════════════════════════════════════════════ -->
+  <header class="topbar">
+    <div class="logo">TRACK<span>WATCH</span></div>
+    <div class="divider"></div>
+    <div class="subtitle">Elephant &amp; Human Collision Prevention · Sri Lanka Railways</div>
+    <div class="topbar-right">
+      <div class="pill ok">  <div class="pill-dot"></div> Pi Online </div>
+      <div class="pill ok">  <div class="pill-dot"></div> Thermal Sensor </div>
+      <div class="pill ok">  <div class="pill-dot"></div> Camera Feed </div>
+      <div class="pill warn"><div class="pill-dot"></div> Siren </div>
+    </div>
+  </header>
+
+  <!-- ══ MAIN ════════════════════════════════════════════════════ -->
+  <div class="main">
+
+    <!-- ── VIDEO PANEL ─────────────────────────────────────────── -->
+    <div class="video-panel">
+      <div class="panel-header">
+        <span class="panel-title">Track Feed — Locomotive Cam 01</span>
+        <div class="live-badge"><div class="live-dot"></div> LIVE</div>
+      </div>
+
+      <div class="video-wrap" id="videoWrap">
+        <!-- ╔══════════════════════════════════════════════════╗
+             ║  SWAP STREAM: replace the src below with        ║
+             ║  Hasira's real stream URL when ready.           ║
+             ║  For HTTP stream: use <img src="URL" />         ║
+             ║  For iframe embed: keep as is, change src       ║
+             ╚══════════════════════════════════════════════════╝ -->
+        <iframe
+          id="streamFrame"
+          src="https://www.youtube.com/embed/IuInEJKrfBY?autoplay=1&mute=1&controls=0&loop=1&playlist=IuInEJKrfBY&modestbranding=1"
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+        ></iframe>
+
+        <!-- Scanlines + corners + HUD -->
+        <div class="scanlines"></div>
+        <div class="corner tl"></div>
+        <div class="corner tr"></div>
+        <div class="corner bl"></div>
+        <div class="corner br"></div>
+
+        <div class="hud" id="hud">
+          LAT: 8.7542° N<br>
+          LON: 80.4983° E<br>
+          SPD: <span id="spd">42.5</span> KM/H
+        </div>
+        <div class="hud-right">
+          THERMAL_GAIN: AUTO<br>
+          <span id="thermalFps">10</span> FPS THERMAL<br>
+          <span id="videoFps">28</span> FPS VIDEO
+        </div>
+
+        <!-- Hazard overlay on video -->
+        <div class="hazard-overlay" id="hazardOverlay">
+          <div class="hazard-box">
+            <div class="hb-title">⚠ HAZARD DETECTED</div>
+            <div class="hb-sub">WARM BODY ON TRACK — RELAY TRIGGERED</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── RIGHT SIDEBAR ───────────────────────────────────────── -->
+    <div class="sidebar">
+
+      <!-- Alarm status card -->
+      <div class="alarm-card clear" id="alarmCard">
+        <div class="alarm-icon" id="alarmIcon">🐘</div>
+        <div class="alarm-status" id="alarmStatus">TRACK CLEAR</div>
+        <div class="alarm-sub" id="alarmSub">No thermal signatures detected</div>
+        <div class="alarm-temp" id="alarmTemp">MAX TEMP: 36.2°C — RELAY TRIGGERED</div>
+        <!-- demo only button -->
+        <button class="demo-toggle" onclick="toggleAlarm()">[ Toggle Demo Alarm ]</button>
+      </div>
+
+      <!-- Thermal grid (8×8 live sim) -->
+      <div class="thermal-section">
+        <div class="section-label">Thermal Grid — AMG8833 (8×8)</div>
+        <div class="thermal-grid" id="thermalGrid"></div>
+      </div>
+
+      <!-- Detection log -->
+      <div class="log-section">
+        <div class="log-header">
+          <div class="section-label" style="margin:0">Detection Log</div>
+          <div class="log-recording">● REC</div>
+        </div>
+        <div class="log-list" id="logList">
+          <div class="log-entry alert"><span class="log-time">22:14:03</span>Warm body detected | Temp: 36.2°C | Relay triggered</div>
+          <div class="log-entry info"> <span class="log-time">22:11:45</span>Perimeter scan complete — all sectors clear</div>
+          <div class="log-entry info"> <span class="log-time">22:08:12</span>Environmental scan OK | No false positives</div>
+          <div class="log-entry info"> <span class="log-time">21:55:30</span>System health check | RAM: 45% | Disk: 12%</div>
+          <div class="log-entry info"> <span class="log-time">21:42:19</span>Pi connected | Thermal polling active | 10 FPS</div>
+          <div class="log-entry info"> <span class="log-time">21:30:00</span>Cloud logging active | RTSP stream initialised</div>
+        </div>
+      </div>
+
+    </div><!-- /sidebar -->
+  </div><!-- /main -->
+
+  <!-- ══ BOTTOM BAR ══════════════════════════════════════════════ -->
+  <footer class="bottombar">
+    <div class="bottom-tabs">
+      <div class="btab active">📡 Live Telemetry</div>
+      <div class="btab">🌡 Thermal Feed</div>
+      <div class="btab">☁ Cloud Log</div>
+    </div>
+    <div class="bottombar-right">
+      <div class="stat"><span class="stat-label">LAST SCAN:</span><span class="stat-val" id="lastScan">0.3s AGO</span></div>
+      <div class="stat"><span class="stat-label">THERMAL FPS:</span><span class="stat-val">10</span></div>
+      <div class="stat"><span class="stat-label">VIDEO FPS:</span><span class="stat-val">28</span></div>
+      <div class="stat"><span class="stat-label">CLOUD:</span><span class="stat-val">CONNECTED</span></div>
+    </div>
+  </footer>
+
+</div><!-- /app -->
+
+<script>
+  /* ─── THERMAL GRID SIMULATION ──────────────────────────────── */
+  const grid = document.getElementById('thermalGrid');
+  const ROWS = 8, COLS = 8;
+  let cells = [];
+  let isHazard = false;
+
+  // build 64 cells
+  for (let i = 0; i < ROWS * COLS; i++) {
+    const c = document.createElement('div');
+    c.className = 'thermal-cell';
+    grid.appendChild(c);
+    cells.push(c);
+  }
+
+  function tempToColor(t) {
+    // jet-like colormap: 20°C → blue, 30°C → cyan/green, 37°C → red
+    const lo = 20, hi = 42;
+    const r = Math.max(0, Math.min(1, (t - lo) / (hi - lo)));
+    // blue → cyan → green → yellow → red
+    const h = (1 - r) * 240; // 240=blue → 0=red
+    return `hsl(${h}, 90%, ${30 + r * 25}%)`;
+  }
+
+  function updateGrid() {
+    const base = isHazard ? 34 : 22;
+    cells.forEach((c, i) => {
+      const row = Math.floor(i / COLS), col = i % COLS;
+      let t = base + (Math.random() * 4 - 2);
+      // if hazard: put a hot blob in center
+      if (isHazard && row >= 2 && row <= 5 && col >= 2 && col <= 5) {
+        t = 35 + Math.random() * 3;
+      }
+      c.style.background = tempToColor(t);
+    });
+  }
+
+  setInterval(updateGrid, 300);
+  updateGrid();
+
+  /* ─── ALARM TOGGLE (DEMO) ──────────────────────────────────── */
+  function toggleAlarm() {
+    isHazard = !isHazard;
+    const card   = document.getElementById('alarmCard');
+    const status = document.getElementById('alarmStatus');
+    const sub    = document.getElementById('alarmSub');
+    const icon   = document.getElementById('alarmIcon');
+    const overlay= document.getElementById('hazardOverlay');
+
+    if (isHazard) {
+      card.className   = 'alarm-card hazard';
+      status.textContent = 'HAZARD DETECTED';
+      sub.textContent    = 'Warm body on track — relay triggered';
+      icon.textContent   = '⚠️';
+      overlay.classList.add('visible');
+      addLog(`Warm body detected | Temp: ${(35 + Math.random()*2).toFixed(1)}°C | Relay triggered`, 'alert');
+    } else {
+      card.className   = 'alarm-card clear';
+      status.textContent = 'TRACK CLEAR';
+      sub.textContent    = 'No thermal signatures detected';
+      icon.textContent   = '🐘';
+      overlay.classList.remove('visible');
+      addLog('Alarm cleared — thermal reading below threshold', 'info');
+    }
+  }
+
+  /* ─── LOG ──────────────────────────────────────────────────── */
+  function addLog(msg, type = 'info') {
+    const list = document.getElementById('logList');
+    const now  = new Date();
+    const time = now.toTimeString().slice(0,8);
+    const entry = document.createElement('div');
+    entry.className = `log-entry ${type}`;
+    entry.innerHTML = `<span class="log-time">${time}</span>${msg}`;
+    list.prepend(entry);
+    // keep max 20 entries
+    while (list.children.length > 20) list.removeChild(list.lastChild);
+  }
+
+  /* ─── LAST SCAN TICKER ─────────────────────────────────────── */
+  let lastScanMs = Date.now();
+  setInterval(() => {
+    const diff = ((Date.now() - lastScanMs) / 1000).toFixed(1);
+    document.getElementById('lastScan').textContent = diff + 's AGO';
+    if (diff > 0.4) lastScanMs = Date.now(); // simulate polling reset
+  }, 100);
+
+  /* ─── SPEED HUD FLICKER ────────────────────────────────────── */
+  setInterval(() => {
+    const s = (40 + Math.random() * 8).toFixed(1);
+    document.getElementById('spd').textContent = s;
+  }, 2000);
+</script>
+</body>
+</html>
