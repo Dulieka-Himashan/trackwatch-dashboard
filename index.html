@@ -521,9 +521,12 @@ function beep(freq, dur, vol){
 }
 function startSound(){
   stopSound();
-  const play = ()=>{ beep(880,.18,.32); setTimeout(()=>beep(660,.18,.28),220); };
-  play();
-  alarmInt = setInterval(play, 900);
+  if(!soundUnlocked||!audioCtx)return;
+  audioCtx.resume().then(()=>{
+    const play=()=>{beep(880,.18,.32);setTimeout(()=>beep(660,.18,.28),220);};
+    play();
+    alarmInt=setInterval(play,900);
+  });
 }
 function stopSound(){ if(alarmInt){clearInterval(alarmInt);alarmInt=null;} }
 
