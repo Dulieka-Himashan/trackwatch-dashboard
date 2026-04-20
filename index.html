@@ -1517,7 +1517,37 @@
     </div>
   </div>
 
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBGY3FBTxcY2kNxXBsPEFy_AkSehTxgWAs",
+      authDomain: "trackwatch-2ae91.firebaseapp.com",
+      projectId: "trackwatch-2ae91",
+      storageBucket: "trackwatch-2ae91.firebasestorage.app",
+      messagingSenderId: "765683549371",
+      appId: "1:765683549371:web:1b28b723efa3c6b82b159e"
+    };
+
+    const firebaseApp = initializeApp(firebaseConfig);
+    const db = getFirestore(firebaseApp);
+
+    async function logToCloud(temp) {
+      try {
+        await addDoc(collection(db, "detections"), {
+          timestamp: new Date().toISOString(),
+          peakTemp: parseFloat(temp),
+          location: "Sector A4 — Vavuniya",
+          status: "HAZARD DETECTED",
+          threshold: 30,
+          unit: "celsius"
+        });
+        console.log("Detection logged to Firebase ✓");
+      } catch (e) {
+        console.warn("Firebase log failed:", e.message);
+      }
+    }
     /* FULLSCREEN */
     function toggleFS() {
       if (!document.fullscreenElement) {
@@ -1686,6 +1716,15 @@
     }
     function stopAlarm() { if (alarmInt) { clearInterval(alarmInt); alarmInt = null; } }
 
+    /* ═══════════════════════════════════════════════════
+       THERMAL DATA — REAL API POLLING
+       ═══════════════════════════════════════════════════
+       Configure these two URLs to match Hasira's endpoints.
+       THERMAL_URL: should return JSON like:
+         {"max": 36.2, "grid": [21.1, 22.3, ...64 values]}
+       If the endpoint is not yet exposed via cloudflare,
+       use the local LAN IP e.g. "http://192.168.1.73/data"
+       ═══════════════════════════════════════════════════ */
     const THERMAL_URL = 'https://railway-safety-monitor-srilanka.trycloudflare.com/thermal';
     const POLL_INTERVAL_MS = 200; // ~10 FPS to match the Pi's polling rate
     const HAZARD_THRESHOLD = 30;  // °C — same as Pi's Python script
@@ -1781,6 +1820,7 @@
       addLog('HAZARD — ' + t + '°C — relay triggered', 'alert');
       updateStats('alert');
       addTimelineDot('alert');
+      logToCloud(t);
       startAlarm();
     }
     function ackAlarm() {
