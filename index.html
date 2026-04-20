@@ -1,23 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>TRACKWATCH — Station Monitoring</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet" />
-  <style>
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TRACKWATCH — Station Monitoring</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-    [data-theme="dark"] {
+[data-theme="dark"] {
       --bg: #080808;
       --surface: #0f0f0f;
       --surface2: #141414;
@@ -26,14 +17,14 @@
       --border2: #383838;
       --green: #00e676;
       --green-dim: #00a152;
-      --green-bg: rgba(0, 230, 118, 0.07);
+      --green-bg: rgba(0,230,118,0.07);
       --teal: #00b4d8;
       --teal-dim: #0077a8;
       --amber: #ffb300;
-      --amber-bg: rgba(255, 179, 0, 0.08);
+      --amber-bg: rgba(255,179,0,0.08);
       --red: #ff1744;
       --red-dim: #b71c1c;
-      --red-bg: rgba(255, 23, 68, 0.08);
+      --red-bg: rgba(255,23,68,0.08);
       --text: #ffffff;
       --text2: #cccccc;
       --text3: #888888;
@@ -41,1835 +32,1094 @@
       --mono: 'DM Mono', monospace;
       --sans: 'DM Sans', sans-serif;
     }
-
-    [data-theme="light"] {
-      --bg: #f4f7f5;
-      --surface: #ffffff;
-      --surface2: #f0f4f1;
-      --surface3: #e8eee9;
-      --border: #d1ddd4;
-      --border2: #b8ccbd;
-      --green: #16a34a;
-      --green-dim: #14532d;
-      --green-bg: rgba(22, 163, 74, 0.06);
-      --teal: #0d9488;
-      --teal-dim: #0f766e;
-      --amber: #d97706;
-      --amber-bg: rgba(217, 119, 6, 0.08);
-      --red: #dc2626;
-      --red-dim: #7f1d1d;
-      --red-bg: rgba(220, 38, 38, 0.08);
-      --text: #0f1f14;
-      --text2: #3d5c46;
-      --text3: #6b8f74;
-      --text4: #b8ccbd;
-      --mono: 'IBM Plex Mono', monospace;
-      --sans: 'IBM Plex Sans', sans-serif;
-    }
-
-    html,
-    body {
-      height: 100%;
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--sans);
-      font-size: 13px;
-      overflow: hidden;
-      -webkit-font-smoothing: antialiased;
-      transition: background .25s, color .25s;
-    }
-
-    .app {
-      display: grid;
-      grid-template-rows: 40px 1fr 36px;
-      height: 100vh
-    }
-
-    /* ─── TOPBAR ─────────────────────────────────────── */
-    .topbar {
-      display: flex;
-      align-items: center;
-      padding: 0 16px;
-      gap: 12px;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      z-index: 20;
-    }
-
-    .logo {
-      font-family: var(--mono);
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: .06em;
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      user-select: none;
-    }
-
-    .logo-accent {
-      color: var(--teal)
-    }
-
-    .logo-sep {
-      color: var(--border2);
-      margin: 0 2px
-    }
-
-    .logo-sub {
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 400;
-      color: var(--text3);
-      letter-spacing: .04em;
-    }
-
-    .tb-sep {
-      width: 1px;
-      height: 16px;
-      background: var(--border2);
-      margin: 0 4px
-    }
-
-    .tb-right {
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      gap: 6px
-    }
-
-    .theme-toggle {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 3px 9px;
-      border-radius: 3px;
-      border: 1px solid var(--border2);
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 500;
-      color: var(--text3);
-      cursor: pointer;
-      background: transparent;
-      transition: all .15s;
-      letter-spacing: .04em;
-    }
-
-    .theme-toggle:hover {
-      border-color: var(--teal);
-      color: var(--teal)
-    }
-
-    .status-pill {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 3px 9px;
-      border-radius: 3px;
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 500;
-      border: 1px solid;
-      cursor: pointer;
-      transition: all .15s;
-      letter-spacing: .03em;
-    }
-
-    .status-pill.ok {
-      border-color: var(--green-dim);
-      color: var(--green);
-      background: var(--green-bg)
-    }
-
-    .status-pill.ok:hover {
-      background: rgba(34, 197, 94, .1)
-    }
-
-    .status-pill.warn {
-      border-color: rgba(245, 158, 11, .3);
-      color: var(--amber);
-      background: var(--amber-bg)
-    }
-
-    .status-pill.warn:hover {
-      background: rgba(245, 158, 11, .12)
-    }
-
-    .pdot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%
-    }
-
-    .status-pill.ok .pdot {
-      background: var(--green)
-    }
-
-    .status-pill.warn .pdot {
-      background: var(--amber);
-      animation: blink 1.4s infinite
-    }
-
-    @keyframes blink {
-
-      0%,
-      100% {
-        opacity: 1
-      }
-
-      50% {
-        opacity: .2
-      }
-    }
-
-    /* ─── MAIN ───────────────────────────────────────── */
-    .main {
-      display: grid;
-      grid-template-columns: 1fr 300px;
-      overflow: hidden
-    }
-
-    /* ─── VIDEO ──────────────────────────────────────── */
-    .vpanel {
-      position: relative;
-      overflow: hidden;
-      background: #000;
-      border-right: 1px solid var(--border);
-    }
-
-    .vpanel iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-      pointer-events: none;
-      z-index: 1;
-      background: #000;
-    }
-
-    .v-scan {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      pointer-events: none;
-      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, .03) 2px, rgba(0, 0, 0, .03) 4px);
-    }
-
-    .v-vig {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      pointer-events: none;
-      background: radial-gradient(ellipse at center, transparent 42%, rgba(0, 0, 0, .65) 100%);
-    }
-
-    [data-theme="light"] .v-vig {
-      background: radial-gradient(ellipse at center, transparent 42%, rgba(0, 0, 0, .3) 100%)
-    }
-
-    .v-grad-b {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 72px;
-      z-index: 3;
-      pointer-events: none;
-      background: linear-gradient(transparent, var(--bg));
-    }
-
-    /* corner brackets */
-    .vc {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      border-style: solid;
-      border-color: var(--teal);
-      z-index: 4;
-      opacity: .4
-    }
-
-    .vc.tl {
-      top: 10px;
-      left: 10px;
-      border-width: 1px 0 0 1px
-    }
-
-    .vc.tr {
-      top: 10px;
-      right: 10px;
-      border-width: 1px 1px 0 0
-    }
-
-    .vc.bl {
-      bottom: 10px;
-      left: 10px;
-      border-width: 0 0 1px 1px
-    }
-
-    .vc.br {
-      bottom: 10px;
-      right: 10px;
-      border-width: 0 1px 1px 0
-    }
-
-    /* top overlay bar */
-    .v-bar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 5;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 12px;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, .7) 0%, transparent 100%);
-    }
-
-    .v-label {
-      font-family: var(--mono);
-      font-size: 9px;
-      font-weight: 500;
-      color: rgba(255, 255, 255, .55);
-      letter-spacing: .1em;
-      text-transform: uppercase;
-    }
-
-    .v-live {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-family: var(--mono);
-      font-size: 9px;
-      font-weight: 600;
-      color: #fff;
-      letter-spacing: .08em;
-      background: var(--red);
-      padding: 3px 8px;
-      border-radius: 2px;
-    }
-
-    .v-ldot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: #fff;
-      animation: blink .8s infinite
-    }
-
-    /* HUD overlays */
-    .v-hud-l {
-      position: absolute;
-      bottom: 14px;
-      left: 12px;
-      z-index: 5;
-      font-family: var(--mono);
-      font-size: 9px;
-      font-weight: 400;
-      color: rgba(45, 212, 191, .75);
-      line-height: 1.9;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, .8);
-    }
-
-    .v-hud-r {
-      position: absolute;
-      bottom: 14px;
-      right: 12px;
-      z-index: 5;
-      font-family: var(--mono);
-      font-size: 9px;
-      font-weight: 400;
-      color: rgba(45, 212, 191, .5);
-      text-align: right;
-      line-height: 1.9;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, .8);
-    }
-
-    /* hazard overlay */
-    .haz {
-      position: absolute;
-      inset: 0;
-      z-index: 7;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity .25s;
-    }
-
-    .haz.show {
-      opacity: 1
-    }
-
-    .haz-box {
-      border: 1px solid var(--red);
-      padding: 16px 40px;
-      text-align: center;
-      background: rgba(239, 68, 68, .1);
-      backdrop-filter: blur(6px);
-      border-radius: 4px;
-      animation: hpulse 1.1s infinite;
-    }
-
-    @keyframes hpulse {
-
-      0%,
-      100% {
-        box-shadow: 0 0 24px rgba(239, 68, 68, .35)
-      }
-
-      50% {
-        box-shadow: none
-      }
-    }
-
-    .haz-label {
-      font-family: var(--mono);
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: .15em;
-      color: rgba(239, 100, 100, .6);
-      margin-bottom: 4px;
-      text-transform: uppercase;
-    }
-
-    .haz-title {
-      font-family: var(--mono);
-      font-size: 22px;
-      font-weight: 600;
-      letter-spacing: .04em;
-      color: var(--red);
-    }
-
-    .haz-sub {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: rgba(255, 180, 180, .55);
-      margin-top: 5px;
-      letter-spacing: .04em;
-    }
-
-    /* ─── SIDEBAR ────────────────────────────────────── */
-    .sidebar {
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      background: var(--surface);
-      transition: background .25s;
-    }
-
-    /* section card */
-    .scard {
-      border-bottom: 1px solid var(--border);
-      padding: 12px 14px;
-      flex-shrink: 0;
-      background: var(--surface);
-      transition: background .25s;
-    }
-
-    .scard-hd {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-
-    .scard-title {
-      font-family: var(--mono);
-      font-size: 9px;
-      font-weight: 500;
-      color: var(--text3);
-      letter-spacing: .1em;
-      text-transform: uppercase;
-    }
-
-    .scard-badge {
-      font-family: var(--mono);
-      font-size: 9px;
-      font-weight: 600;
-      padding: 2px 6px;
-      border-radius: 2px;
-      letter-spacing: .04em;
-    }
-
-    .scard-badge.ok {
-      color: var(--green);
-      background: var(--green-bg)
-    }
-
-    .scard-badge.warn {
-      color: var(--amber);
-      background: var(--amber-bg)
-    }
-
-    .scard-badge.alert {
-      color: var(--red);
-      background: var(--red-bg)
-    }
-
-    /* ─── ALARM ──────────────────────────────────────── */
-    .alarm-state {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 4px
-    }
-
-    .alarm-led {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      transition: all .3s;
-    }
-
-    .alarm-clear .alarm-led {
-      background: var(--green);
-      box-shadow: 0 0 8px var(--green)
-    }
-
-    .alarm-hazard .alarm-led {
-      background: var(--red);
-      box-shadow: 0 0 8px var(--red);
-      animation: blink .5s infinite
-    }
-
-    .alarm-status-txt {
-      font-family: var(--mono);
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: .02em;
-      transition: color .3s;
-    }
-
-    .alarm-clear .alarm-status-txt {
-      color: var(--green)
-    }
-
-    .alarm-hazard .alarm-status-txt {
-      color: var(--red)
-    }
-
-    .alarm-desc {
-      font-family: var(--sans);
-      font-size: 11px;
-      color: var(--text3);
-      margin-bottom: 8px;
-      font-weight: 400;
-    }
-
-    .alarm-temp-row {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--amber);
-      background: var(--amber-bg);
-      border: 1px solid rgba(245, 158, 11, .18);
-      padding: 4px 8px;
-      border-radius: 2px;
-      margin-bottom: 8px;
-      display: none;
-      letter-spacing: .03em;
-    }
-
-    .alarm-hazard .alarm-temp-row {
-      display: block
-    }
-
-    /* progress bar */
-    .pb-wrap {
-      height: 2px;
-      background: var(--surface3);
-      border-radius: 1px;
-      overflow: hidden;
-      margin-bottom: 4px
-    }
-
-    .pb {
-      height: 100%;
-      border-radius: 1px;
-      transition: width .1s linear
-    }
-
-    .pb.ok {
-      background: var(--green)
-    }
-
-    .pb.hot {
-      background: var(--red)
-    }
-
-    .pb-lbl {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--text3);
-      letter-spacing: .04em
-    }
-
-    .ack-btn {
-      margin-top: 8px;
-      width: 100%;
-      padding: 6px 0;
-      border-radius: 3px;
-      border: 1px solid rgba(239, 68, 68, .25);
-      color: var(--red);
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: .04em;
-      cursor: pointer;
-      background: transparent;
-      transition: all .15s;
-      display: none;
-    }
-
-    .ack-btn:hover {
-      background: var(--red-bg)
-    }
-
-    .alarm-hazard .ack-btn {
-      display: block
-    }
-
-    /* ─── THERMAL ────────────────────────────────────── */
-    .tgrid {
-      display: grid;
-      grid-template-columns: repeat(8, 1fr);
-      gap: 2px;
-      margin-bottom: 6px
-    }
-
-    .tc {
-      aspect-ratio: 1;
-      border-radius: 1px;
-      transition: background .2s
-    }
-
-    .tlegend {
-      display: flex;
-      justify-content: space-between;
-      font-family: var(--mono);
-      font-size: 8px;
-      color: var(--text3);
-      letter-spacing: .04em;
-    }
-
-    .tpeak {
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--amber)
-    }
-
-    /* ─── CONTROLS ───────────────────────────────────── */
-    .ctrl-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 5px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .ctrl-row:last-child {
-      border: none;
-      padding-bottom: 0
-    }
-
-    .ctrl-name {
-      font-family: var(--sans);
-      font-size: 11px;
-      color: var(--text2);
-      font-weight: 400;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .rec-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--red);
-      box-shadow: 0 0 5px var(--red);
-      animation: blink .7s infinite;
-      display: inline-block;
-    }
-
-    .ctrl-r {
-      display: flex;
-      align-items: center;
-      gap: 7px
-    }
-
-    /* toggle */
-    .tog {
-      width: 28px;
-      height: 14px;
-      border-radius: 7px;
-      cursor: pointer;
-      position: relative;
-      transition: background .2s;
-      flex-shrink: 0;
-      border: 1px solid transparent;
-    }
-
-    .tog.on {
-      background: var(--green-dim)
-    }
-
-    .tog.off {
-      background: var(--surface3)
-    }
-
-    .tog::after {
-      content: '';
-      position: absolute;
-      top: 1px;
-      left: 1px;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #fff;
-      transition: transform .2s;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, .35);
-    }
-
-    .tog.on::after {
-      transform: translateX(14px)
-    }
-
-    .tog-lbl {
-      font-family: var(--mono);
-      font-size: 9px;
-      min-width: 40px;
-      letter-spacing: .03em
-    }
-
-    .tog.on+.tog-lbl {
-      color: var(--green)
-    }
-
-    .tog.off+.tog-lbl {
-      color: var(--text3)
-    }
-
-    /* ─── LOG ────────────────────────────────────────── */
-    .log-card {
-      flex: 1;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      min-height: 0
-    }
-
-    .log-list {
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1px
-    }
-
-    .log-list::-webkit-scrollbar {
-      width: 2px
-    }
-
-    .log-list::-webkit-scrollbar-thumb {
-      background: var(--border2)
-    }
-
-    .le {
-      padding: 6px 8px;
-      font-family: var(--mono);
-      font-size: 9px;
-      line-height: 1.6;
-      background: transparent;
-      border-left: 2px solid transparent;
-      color: var(--text3);
-      cursor: pointer;
-      transition: background .1s;
-      letter-spacing: .02em;
-    }
-
-    .le:hover {
-      background: var(--surface2)
-    }
-
-    .le.alert {
-      border-left-color: var(--red);
-      color: var(--text)
-    }
-
-    .le.info {
-      border-left-color: var(--green-dim)
-    }
-
-    .le.warn {
-      border-left-color: var(--amber)
-    }
-
-    .lt {
-      color: var(--amber);
-      margin-right: 6px;
-      font-weight: 500
-    }
-
-    .log-rec-badge {
-      font-family: var(--mono);
-      font-size: 8px;
-      color: var(--red);
-      animation: blink 1.2s infinite;
-      letter-spacing: .06em;
-      font-weight: 500;
-    }
-
-    /* ─── BOTTOM BAR ─────────────────────────────────── */
-    .bottombar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--text3);
-      letter-spacing: .04em;
-      transition: background .25s;
-    }
-
-    .btabs {
-      display: flex;
-      height: 100%
-    }
-
-    .btab {
-      display: flex;
-      align-items: center;
-      padding: 0 14px;
-      border-right: 1px solid var(--border);
-      cursor: pointer;
-      color: var(--text3);
-      transition: all .15s;
-      font-weight: 400;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      font-size: 9px;
-    }
-
-    .btab:hover {
-      color: var(--text);
-      background: var(--surface2)
-    }
-
-    .btab.active {
-      color: var(--teal);
-      border-bottom: 2px solid var(--teal)
-    }
-
-    .bstats {
-      display: flex;
-      gap: 20px;
-      align-items: center
-    }
-
-    .bstat {
-      display: flex;
-      gap: 5px
-    }
-
-    .bsk {
-      color: var(--text3)
-    }
-
-    .bsv {
-      color: var(--teal);
-      font-weight: 500
-    }
-
-    /* ─── DETECTION STATS ────────────────────────────── */
-    .stats-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 1px;
-      background: var(--border);
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-
-    .stat-box {
-      background: var(--surface);
-      padding: 9px 10px;
-      transition: background .25s;
-    }
-
-    .stat-box:hover {
-      background: var(--surface2)
-    }
-
-    .stat-num {
-      font-family: var(--mono);
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--text);
-      letter-spacing: -.01em;
-      line-height: 1;
-      margin-bottom: 2px;
-    }
-
-    .stat-num.red {
-      color: var(--red)
-    }
-
-    .stat-num.green {
-      color: var(--green)
-    }
-
-    .stat-lbl {
-      font-family: var(--mono);
-      font-size: 8px;
-      color: var(--text3);
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-
-    /* ─── TEMP GRAPH ─────────────────────────────────── */
-    .graph-card {
-      flex-shrink: 0
-    }
-
-    .graph-wrap {
-      position: relative;
-      height: 60px
-    }
-
-    #tempCanvas {
-      width: 100%;
-      height: 60px;
-      display: block
-    }
-
-    .graph-threshold {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      font-family: var(--mono);
-      font-size: 7px;
-      color: var(--red);
-      opacity: .6;
-      letter-spacing: .06em;
-      pointer-events: none;
-    }
-
-    /* ─── ALERT TIMELINE ─────────────────────────────── */
-    .timeline-card {
-      flex-shrink: 0
-    }
-
-    .timeline-wrap {
-      position: relative;
-      height: 28px;
-      background: var(--surface2);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .timeline-axis {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: var(--border2);
-      transform: translateY(-50%);
-    }
-
-    .tl-dot {
-      position: absolute;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      cursor: pointer;
-      transition: transform .15s;
-    }
-
-    .tl-dot:hover {
-      transform: translate(-50%, -50%) scale(1.4)
-    }
-
-    .tl-dot.alert {
-      background: var(--red);
-      box-shadow: 0 0 6px var(--red)
-    }
-
-    .tl-dot.info {
-      background: var(--green-dim)
-    }
-
-    .tl-dot.warn {
-      background: var(--amber)
-    }
-
-    .tl-now {
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      background: var(--teal);
-      opacity: .5;
-    }
-
-    .tl-labels {
-      display: flex;
-      justify-content: space-between;
-      font-family: var(--mono);
-      font-size: 7px;
-      color: var(--text3);
-      letter-spacing: .04em;
-      margin-top: 3px;
-    }
-
-    /* ─── FULLSCREEN ─────────────────────────────────── */
-    .fs-btn {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 3px 9px;
-      border-radius: 3px;
-      border: 1px solid var(--border2);
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 500;
-      color: var(--text3);
-      cursor: pointer;
-      background: transparent;
-      transition: all .15s;
-      letter-spacing: .04em;
-    }
-
-    .fs-btn:hover {
-      border-color: var(--teal);
-      color: var(--teal)
-    }
-
-    :fullscreen .app,
-    :fullscreen body {
-      height: 100vh !important
-    }
-
-    /* ─── MODALS ─────────────────────────────────────── */
-    .mbg {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, .65);
-      backdrop-filter: blur(4px);
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .15s;
-    }
-
-    .mbg.show {
-      opacity: 1;
-      pointer-events: all
-    }
-
-    .modal {
-      background: var(--surface2);
-      border: 1px solid var(--border2);
-      width: 440px;
-      max-width: 92vw;
-      border-radius: 4px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
-      transform: translateY(6px);
-      transition: transform .15s, background .25s;
-    }
-
-    .mbg.show .modal {
-      transform: translateY(0)
-    }
-
-    .mh {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .mt {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text);
-      letter-spacing: .04em;
-    }
-
-    .mx {
-      background: none;
-      border: none;
-      color: var(--text3);
-      cursor: pointer;
-      font-size: 15px;
-      transition: color .15s
-    }
-
-    .mx:hover {
-      color: var(--text)
-    }
-
-    .mb {
-      padding: 14px 16px
-    }
-
-    .mrow {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 7px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .mrow:last-child {
-      border: none;
-      padding-bottom: 0
-    }
-
-    .mk {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--text3);
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      white-space: nowrap;
-      font-weight: 500
-    }
-
-    .mv {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--text);
-      text-align: right;
-      font-weight: 400
-    }
-
-    .mv.ok {
-      color: var(--green)
-    }
-
-    .mv.warn {
-      color: var(--amber)
-    }
-
-    .mv.al {
-      color: var(--red)
-    }
-
-    .mf {
-      padding: 10px 16px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: flex-end
-    }
-
-    .mbtn {
-      padding: 5px 14px;
-      border-radius: 3px;
-      border: 1px solid var(--border2);
-      color: var(--text2);
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 500;
-      cursor: pointer;
-      background: transparent;
-      transition: all .15s;
-      letter-spacing: .04em;
-    }
-
-    .mbtn:hover {
-      border-color: var(--teal);
-      color: var(--teal)
-    }
-  </style>
+[data-theme="light"]{
+  --bg:        #f4f7f5;
+  --surface:   #ffffff;
+  --surface2:  #f0f4f1;
+  --surface3:  #e8eee9;
+  --border:    #d1ddd4;
+  --border2:   #b8ccbd;
+  --green:     #16a34a;
+  --green-dim: #14532d;
+  --green-bg:  rgba(22,163,74,0.06);
+  --teal:      #0d9488;
+  --teal-dim:  #0f766e;
+  --amber:     #d97706;
+  --amber-bg:  rgba(217,119,6,0.08);
+  --red:       #dc2626;
+  --red-dim:   #7f1d1d;
+  --red-bg:    rgba(220,38,38,0.08);
+  --text:      #0f1f14;
+  --text2:     #3d5c46;
+  --text3:     #6b8f74;
+  --text4:     #b8ccbd;
+  --mono:      'IBM Plex Mono', monospace;
+  --sans:      'IBM Plex Sans', sans-serif;
+}
+
+html,body{
+  height:100%;background:var(--bg);color:var(--text);
+  font-family:var(--sans);font-size:13px;
+  overflow:hidden;-webkit-font-smoothing:antialiased;
+  transition:background .25s,color .25s;
+}
+.app{display:grid;grid-template-rows:40px 1fr 36px;height:100vh}
+
+/* ─── TOPBAR ─────────────────────────────────────── */
+.topbar{
+  display:flex;align-items:center;padding:0 16px;gap:12px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  z-index:20;
+}
+.logo{
+  font-family:var(--mono);font-size:13px;font-weight:600;
+  letter-spacing:.06em;color:var(--text);
+  display:flex;align-items:center;gap:6px;user-select:none;
+}
+.logo-accent{color:var(--teal)}
+.logo-sep{color:var(--border2);margin:0 2px}
+.logo-sub{
+  font-family:var(--mono);font-size:10px;font-weight:400;
+  color:var(--text3);letter-spacing:.04em;
+}
+.tb-sep{width:1px;height:16px;background:var(--border2);margin:0 4px}
+
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:6px}
+
+.theme-toggle{
+  display:flex;align-items:center;gap:5px;
+  padding:3px 9px;border-radius:3px;
+  border:1px solid var(--border2);
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  color:var(--text3);cursor:pointer;
+  background:transparent;transition:all .15s;letter-spacing:.04em;
+}
+.theme-toggle:hover{border-color:var(--teal);color:var(--teal)}
+
+.status-pill{
+  display:flex;align-items:center;gap:5px;
+  padding:3px 9px;border-radius:3px;
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  border:1px solid;cursor:pointer;transition:all .15s;
+  letter-spacing:.03em;
+}
+.status-pill.ok  {border-color:var(--green-dim);color:var(--green);background:var(--green-bg)}
+.status-pill.ok:hover{background:rgba(34,197,94,.1)}
+.status-pill.warn{border-color:rgba(245,158,11,.3);color:var(--amber);background:var(--amber-bg)}
+.status-pill.warn:hover{background:rgba(245,158,11,.12)}
+.pdot{width:5px;height:5px;border-radius:50%}
+.status-pill.ok .pdot{background:var(--green)}
+.status-pill.warn .pdot{background:var(--amber);animation:blink 1.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* ─── MAIN ───────────────────────────────────────── */
+.main{display:grid;grid-template-columns:1fr 300px;overflow:hidden}
+
+/* ─── VIDEO ──────────────────────────────────────── */
+.vpanel{
+  position:relative;overflow:hidden;background:#000;
+  border-right:1px solid var(--border);
+}
+.vpanel iframe{
+  position:absolute;inset:0;width:100%;height:100%;
+  border:none;pointer-events:none;z-index:1;
+  background:#000;
+}
+.v-scan{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);
+}
+.v-vig{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(ellipse at center,transparent 42%,rgba(0,0,0,.65) 100%);
+}
+[data-theme="light"] .v-vig{background:radial-gradient(ellipse at center,transparent 42%,rgba(0,0,0,.3) 100%)}
+.v-grad-b{
+  position:absolute;bottom:0;left:0;right:0;height:72px;z-index:3;pointer-events:none;
+  background:linear-gradient(transparent,var(--bg));
+}
+
+/* corner brackets */
+.vc{position:absolute;width:12px;height:12px;border-style:solid;border-color:var(--teal);z-index:4;opacity:.4}
+.vc.tl{top:10px;left:10px;border-width:1px 0 0 1px}
+.vc.tr{top:10px;right:10px;border-width:1px 1px 0 0}
+.vc.bl{bottom:10px;left:10px;border-width:0 0 1px 1px}
+.vc.br{bottom:10px;right:10px;border-width:0 1px 1px 0}
+
+/* top overlay bar */
+.v-bar{
+  position:absolute;top:0;left:0;right:0;z-index:5;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 12px;
+  background:linear-gradient(to bottom,rgba(0,0,0,.7) 0%,transparent 100%);
+}
+.v-label{
+  font-family:var(--mono);font-size:9px;font-weight:500;
+  color:rgba(255,255,255,.55);letter-spacing:.1em;text-transform:uppercase;
+}
+.v-live{
+  display:flex;align-items:center;gap:5px;
+  font-family:var(--mono);font-size:9px;font-weight:600;
+  color:#fff;letter-spacing:.08em;
+  background:var(--red);padding:3px 8px;border-radius:2px;
+}
+.v-ldot{width:5px;height:5px;border-radius:50%;background:#fff;animation:blink .8s infinite}
+
+/* HUD overlays */
+.v-hud-l{
+  position:absolute;bottom:14px;left:12px;z-index:5;
+  font-family:var(--mono);font-size:9px;font-weight:400;
+  color:rgba(45,212,191,.75);line-height:1.9;
+  text-shadow:0 1px 4px rgba(0,0,0,.8);
+}
+.v-hud-r{
+  position:absolute;bottom:14px;right:12px;z-index:5;
+  font-family:var(--mono);font-size:9px;font-weight:400;
+  color:rgba(45,212,191,.5);text-align:right;line-height:1.9;
+  text-shadow:0 1px 4px rgba(0,0,0,.8);
+}
+
+/* hazard overlay */
+.haz{
+  position:absolute;inset:0;z-index:7;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;opacity:0;transition:opacity .25s;
+}
+.haz.show{opacity:1}
+.haz-box{
+  border:1px solid var(--red);padding:16px 40px;text-align:center;
+  background:rgba(239,68,68,.1);backdrop-filter:blur(6px);border-radius:4px;
+  animation:hpulse 1.1s infinite;
+}
+@keyframes hpulse{0%,100%{box-shadow:0 0 24px rgba(239,68,68,.35)}50%{box-shadow:none}}
+.haz-label{
+  font-family:var(--mono);font-size:9px;font-weight:500;
+  letter-spacing:.15em;color:rgba(239,100,100,.6);margin-bottom:4px;
+  text-transform:uppercase;
+}
+.haz-title{
+  font-family:var(--mono);font-size:22px;font-weight:600;
+  letter-spacing:.04em;color:var(--red);
+}
+.haz-sub{
+  font-family:var(--mono);font-size:9px;color:rgba(255,180,180,.55);
+  margin-top:5px;letter-spacing:.04em;
+}
+
+/* ─── SIDEBAR ────────────────────────────────────── */
+.sidebar{
+  display:flex;flex-direction:column;overflow:hidden;
+  background:var(--surface);transition:background .25s;
+}
+
+/* section card */
+.scard{
+  border-bottom:1px solid var(--border);
+  padding:12px 14px;flex-shrink:0;
+  background:var(--surface);transition:background .25s;
+}
+.scard-hd{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:10px;
+}
+.scard-title{
+  font-family:var(--mono);font-size:9px;font-weight:500;
+  color:var(--text3);letter-spacing:.1em;text-transform:uppercase;
+}
+.scard-badge{
+  font-family:var(--mono);font-size:9px;font-weight:600;
+  padding:2px 6px;border-radius:2px;letter-spacing:.04em;
+}
+.scard-badge.ok  {color:var(--green);background:var(--green-bg)}
+.scard-badge.warn{color:var(--amber);background:var(--amber-bg)}
+.scard-badge.alert{color:var(--red);background:var(--red-bg)}
+
+/* ─── ALARM ──────────────────────────────────────── */
+.alarm-state{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.alarm-led{
+  width:8px;height:8px;border-radius:50%;flex-shrink:0;
+  transition:all .3s;
+}
+.alarm-clear .alarm-led{background:var(--green);box-shadow:0 0 8px var(--green)}
+.alarm-hazard .alarm-led{background:var(--red);box-shadow:0 0 8px var(--red);animation:blink .5s infinite}
+.alarm-status-txt{
+  font-family:var(--mono);font-size:15px;font-weight:600;
+  letter-spacing:.02em;transition:color .3s;
+}
+.alarm-clear  .alarm-status-txt{color:var(--green)}
+.alarm-hazard .alarm-status-txt{color:var(--red)}
+.alarm-desc{
+  font-family:var(--sans);font-size:11px;color:var(--text3);
+  margin-bottom:8px;font-weight:400;
+}
+.alarm-temp-row{
+  font-family:var(--mono);font-size:10px;color:var(--amber);
+  background:var(--amber-bg);border:1px solid rgba(245,158,11,.18);
+  padding:4px 8px;border-radius:2px;margin-bottom:8px;display:none;
+  letter-spacing:.03em;
+}
+.alarm-hazard .alarm-temp-row{display:block}
+
+/* progress bar */
+.pb-wrap{height:2px;background:var(--surface3);border-radius:1px;overflow:hidden;margin-bottom:4px}
+.pb{height:100%;border-radius:1px;transition:width .1s linear}
+.pb.ok {background:var(--green)}
+.pb.hot{background:var(--red)}
+.pb-lbl{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.04em}
+
+.ack-btn{
+  margin-top:8px;width:100%;padding:6px 0;border-radius:3px;
+  border:1px solid rgba(239,68,68,.25);color:var(--red);
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  letter-spacing:.04em;
+  cursor:pointer;background:transparent;transition:all .15s;display:none;
+}
+.ack-btn:hover{background:var(--red-bg)}
+.alarm-hazard .ack-btn{display:block}
+
+/* ─── THERMAL ────────────────────────────────────── */
+.tgrid{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;margin-bottom:6px}
+.tc{aspect-ratio:1;border-radius:1px;transition:background .2s}
+.tlegend{
+  display:flex;justify-content:space-between;
+  font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.04em;
+}
+.tpeak{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--amber)}
+
+/* ─── CONTROLS ───────────────────────────────────── */
+.ctrl-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:5px 0;border-bottom:1px solid var(--border);
+}
+.ctrl-row:last-child{border:none;padding-bottom:0}
+.ctrl-name{
+  font-family:var(--sans);font-size:11px;color:var(--text2);font-weight:400;
+  display:flex;align-items:center;gap:6px;
+}
+.rec-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--red);
+  box-shadow:0 0 5px var(--red);animation:blink .7s infinite;display:inline-block;
+}
+.ctrl-r{display:flex;align-items:center;gap:7px}
+
+/* toggle */
+.tog{
+  width:28px;height:14px;border-radius:7px;cursor:pointer;
+  position:relative;transition:background .2s;flex-shrink:0;
+  border:1px solid transparent;
+}
+.tog.on {background:var(--green-dim)}
+.tog.off{background:var(--surface3)}
+.tog::after{
+  content:'';position:absolute;top:1px;left:1px;
+  width:10px;height:10px;border-radius:50%;
+  background:#fff;transition:transform .2s;
+  box-shadow:0 1px 2px rgba(0,0,0,.35);
+}
+.tog.on::after{transform:translateX(14px)}
+.tog-lbl{font-family:var(--mono);font-size:9px;min-width:40px;letter-spacing:.03em}
+.tog.on  + .tog-lbl{color:var(--green)}
+.tog.off + .tog-lbl{color:var(--text3)}
+
+/* ─── LOG ────────────────────────────────────────── */
+.log-card{flex:1;overflow:hidden;display:flex;flex-direction:column;min-height:0}
+.log-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:1px}
+.log-list::-webkit-scrollbar{width:2px}
+.log-list::-webkit-scrollbar-thumb{background:var(--border2)}
+
+.le{
+  padding:6px 8px;
+  font-family:var(--mono);font-size:9px;line-height:1.6;
+  background:transparent;border-left:2px solid transparent;
+  color:var(--text3);cursor:pointer;transition:background .1s;
+  letter-spacing:.02em;
+}
+.le:hover{background:var(--surface2)}
+.le.alert{border-left-color:var(--red);color:var(--text)}
+.le.info {border-left-color:var(--green-dim)}
+.le.warn {border-left-color:var(--amber)}
+.lt{color:var(--amber);margin-right:6px;font-weight:500}
+.log-rec-badge{
+  font-family:var(--mono);font-size:8px;color:var(--red);
+  animation:blink 1.2s infinite;letter-spacing:.06em;font-weight:500;
+}
+
+/* ─── BOTTOM BAR ─────────────────────────────────── */
+.bottombar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;background:var(--surface);
+  border-top:1px solid var(--border);
+  font-family:var(--mono);font-size:9px;color:var(--text3);
+  letter-spacing:.04em;transition:background .25s;
+}
+.btabs{display:flex;height:100%}
+.btab{
+  display:flex;align-items:center;padding:0 14px;
+  border-right:1px solid var(--border);cursor:pointer;
+  color:var(--text3);transition:all .15s;font-weight:400;
+  letter-spacing:.06em;text-transform:uppercase;font-size:9px;
+}
+.btab:hover{color:var(--text);background:var(--surface2)}
+.btab.active{color:var(--teal);border-bottom:2px solid var(--teal)}
+.bstats{display:flex;gap:20px;align-items:center}
+.bstat{display:flex;gap:5px}
+.bsk{color:var(--text3)}
+.bsv{color:var(--teal);font-weight:500}
+
+/* ─── DETECTION STATS ────────────────────────────── */
+.stats-row{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:1px;background:var(--border);
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.stat-box{
+  background:var(--surface);padding:9px 10px;
+  transition:background .25s;
+}
+.stat-box:hover{background:var(--surface2)}
+.stat-num{
+  font-family:var(--mono);font-size:18px;font-weight:600;
+  color:var(--text);letter-spacing:-.01em;line-height:1;
+  margin-bottom:2px;
+}
+.stat-num.red{color:var(--red)}
+.stat-num.green{color:var(--green)}
+.stat-lbl{
+  font-family:var(--mono);font-size:8px;color:var(--text3);
+  letter-spacing:.08em;text-transform:uppercase;
+}
+
+/* ─── TEMP GRAPH ─────────────────────────────────── */
+.graph-card{flex-shrink:0}
+.graph-wrap{position:relative;height:60px}
+#tempCanvas{width:100%;height:60px;display:block}
+.graph-threshold{
+  position:absolute;top:0;left:0;right:0;
+  font-family:var(--mono);font-size:7px;color:var(--red);
+  opacity:.6;letter-spacing:.06em;pointer-events:none;
+}
+
+/* ─── ALERT TIMELINE ─────────────────────────────── */
+.timeline-card{flex-shrink:0}
+.timeline-wrap{
+  position:relative;height:28px;
+  background:var(--surface2);border-radius:2px;overflow:hidden;
+}
+.timeline-axis{
+  position:absolute;top:50%;left:0;right:0;height:1px;
+  background:var(--border2);transform:translateY(-50%);
+}
+.tl-dot{
+  position:absolute;top:50%;transform:translate(-50%,-50%);
+  width:8px;height:8px;border-radius:50%;cursor:pointer;
+  transition:transform .15s;
+}
+.tl-dot:hover{transform:translate(-50%,-50%) scale(1.4)}
+.tl-dot.alert{background:var(--red);box-shadow:0 0 6px var(--red)}
+.tl-dot.info {background:var(--green-dim)}
+.tl-dot.warn {background:var(--amber)}
+.tl-now{
+  position:absolute;right:0;top:0;bottom:0;width:2px;
+  background:var(--teal);opacity:.5;
+}
+.tl-labels{
+  display:flex;justify-content:space-between;
+  font-family:var(--mono);font-size:7px;color:var(--text3);
+  letter-spacing:.04em;margin-top:3px;
+}
+
+/* ─── FULLSCREEN ─────────────────────────────────── */
+.fs-btn{
+  display:flex;align-items:center;gap:5px;
+  padding:3px 9px;border-radius:3px;
+  border:1px solid var(--border2);
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  color:var(--text3);cursor:pointer;
+  background:transparent;transition:all .15s;letter-spacing:.04em;
+}
+.fs-btn:hover{border-color:var(--teal);color:var(--teal)}
+:fullscreen .app,:fullscreen body{height:100vh!important}
+
+/* ─── MODALS ─────────────────────────────────────── */
+.mbg{
+  position:fixed;inset:0;background:rgba(0,0,0,.65);
+  backdrop-filter:blur(4px);z-index:100;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .15s;
+}
+.mbg.show{opacity:1;pointer-events:all}
+.modal{
+  background:var(--surface2);
+  border:1px solid var(--border2);
+  width:440px;max-width:92vw;border-radius:4px;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+  transform:translateY(6px);transition:transform .15s,background .25s;
+}
+.mbg.show .modal{transform:translateY(0)}
+.mh{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;border-bottom:1px solid var(--border);
+}
+.mt{
+  font-family:var(--mono);font-size:11px;font-weight:600;
+  color:var(--text);letter-spacing:.04em;
+}
+.mx{background:none;border:none;color:var(--text3);cursor:pointer;font-size:15px;transition:color .15s}
+.mx:hover{color:var(--text)}
+.mb{padding:14px 16px}
+.mrow{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:12px;padding:7px 0;border-bottom:1px solid var(--border);
+}
+.mrow:last-child{border:none;padding-bottom:0}
+.mk{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;font-weight:500}
+.mv{font-family:var(--mono);font-size:10px;color:var(--text);text-align:right;font-weight:400}
+.mv.ok{color:var(--green)}.mv.warn{color:var(--amber)}.mv.al{color:var(--red)}
+.mf{padding:10px 16px;border-top:1px solid var(--border);display:flex;justify-content:flex-end}
+.mbtn{
+  padding:5px 14px;border-radius:3px;border:1px solid var(--border2);
+  color:var(--text2);font-family:var(--mono);font-size:10px;font-weight:500;
+  cursor:pointer;background:transparent;transition:all .15s;letter-spacing:.04em;
+}
+.mbtn:hover{border-color:var(--teal);color:var(--teal)}
+</style>
 </head>
-
 <body>
-  <div class="app">
+<div class="app">
 
-    <!-- TOPBAR -->
-    <header class="topbar">
-      <div class="logo">
-        TRACK<span class="logo-accent">WATCH</span>
-        <span class="logo-sep">/</span>
-        <span class="logo-sub">STATION MONITORING · SRI LANKA RAILWAYS</span>
-      </div>
-      <div class="tb-sep"></div>
-      <div class="tb-right">
-        <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">☀ LIGHT</button>
-        <button class="fs-btn" onclick="toggleFS()" id="fsBtn">⛶ FULLSCREEN</button>
-        <div class="status-pill ok" onclick="showM('pi')">
-          <div class="pdot"></div>PI
-        </div>
-        <div class="status-pill ok" onclick="showM('thermal')">
-          <div class="pdot"></div>THERMAL
-        </div>
-        <div class="status-pill ok" onclick="showM('cam')">
-          <div class="pdot"></div>CAMERA
-        </div>
-        <div class="status-pill warn" id="sirenPill" onclick="showM('siren')">
-          <div class="pdot"></div>SIREN
-        </div>
-      </div>
-    </header>
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="logo">
+    TRACK<span class="logo-accent">WATCH</span>
+    <span class="logo-sep">/</span>
+    <span class="logo-sub">STATION MONITORING · SRI LANKA RAILWAYS</span>
+  </div>
+  <div class="tb-sep"></div>
+  <div class="tb-right">
+    <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">☀ LIGHT</button>
+    <button class="fs-btn" onclick="toggleFS()" id="fsBtn">⛶ FULLSCREEN</button>
+    <div class="status-pill ok"   onclick="showM('pi')">     <div class="pdot"></div>PI</div>
+    <div class="status-pill ok"   onclick="showM('thermal')"><div class="pdot"></div>THERMAL</div>
+    <div class="status-pill ok"   onclick="showM('cam')">    <div class="pdot"></div>CAMERA</div>
+    <div class="status-pill warn" id="sirenPill" onclick="showM('siren')"><div class="pdot"></div>SIREN</div>
+  </div>
+</header>
 
-    <!-- MAIN -->
-    <div class="main">
+<!-- MAIN -->
+<div class="main">
 
-      <!-- VIDEO -->
-      <div class="vpanel">
-        <!--
+  <!-- VIDEO -->
+  <div class="vpanel">
+    <!--
       CONNECT REAL STREAM: replace iframe with
       <img src="http://PI_IP:PORT/stream"
            style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1"/>
     -->
-        <!-- LIVE STREAM — real Pi feed via cloudflare tunnel -->
-        <iframe id="streamFrame" src="https://railway-safety-monitor-srilanka.trycloudflare.com/train_live/"
-          style="position:absolute;inset:0;width:100%;height:100%;border:none;z-index:1;background:#000" allowfullscreen
-          allow="autoplay"></iframe>
-        <!-- fallback: if stream is MJPEG use this img tag instead of iframe above
+    <!-- LIVE STREAM — real Pi feed via cloudflare tunnel -->
+    <iframe
+      id="streamFrame"
+      src="https://railway-safety-monitor-srilanka.trycloudflare.com/train_live/"
+      style="position:absolute;inset:0;width:100%;height:100%;border:none;z-index:1;background:#000"
+      allowfullscreen allow="autoplay"
+    ></iframe>
+    <!-- fallback: if stream is MJPEG use this img tag instead of iframe above
     <img id="streamFrame"
       src="https://railway-safety-monitor-srilanka.trycloudflare.com/train_live/"
       style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:1;background:#000"
     />
     -->
-        <div class="v-scan"></div>
-        <div class="v-vig"></div>
-        <div class="v-grad-b"></div>
-        <div class="vc tl"></div>
-        <div class="vc tr"></div>
-        <div class="vc bl"></div>
-        <div class="vc br"></div>
-        <div class="v-bar">
-          <div class="v-label">CAM_01 · SECTOR A4 · VAVUNIYA</div>
-          <div class="v-live">
-            <div class="v-ldot"></div>LIVE
-          </div>
-        </div>
-        <div class="v-hud-l">
-          LAT 8.7542° N<br>
-          LON 80.4983° E<br>
-          SPD <span id="spd">42.5</span> KM/H
-        </div>
-        <div class="v-hud-r">
-          THERMAL 10 FPS<br>
-          VIDEO 28 FPS<br>
-          DVR <span style="color:var(--red)">● REC</span>
-        </div>
-        <div class="haz" id="hazWrap">
-          <div class="haz-box">
-            <div class="haz-label">collision risk · sector a4</div>
-            <div class="haz-title">HAZARD ON TRACK</div>
-            <div class="haz-sub" id="hazSub">thermal: 36.2°C — relay triggered</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SIDEBAR -->
-      <div class="sidebar">
-
-        <!-- DETECTION STATS -->
-        <div class="stats-row">
-          <div class="stat-box">
-            <div class="stat-num red" id="statTotal">0</div>
-            <div class="stat-lbl">Detections</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-num" id="statLast">—</div>
-            <div class="stat-lbl">Last Event</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-num green" id="statClear">0</div>
-            <div class="stat-lbl">Clear Scans</div>
-          </div>
-        </div>
-
-        <!-- ALARM STATUS -->
-        <div class="scard">
-          <div class="scard-hd">
-            <span class="scard-title">Alarm Status</span>
-            <span class="scard-badge ok" id="alarmBadge">NOMINAL</span>
-          </div>
-          <div id="alarmCard" class="alarm-clear">
-            <div class="alarm-state">
-              <div class="alarm-led"></div>
-              <div class="alarm-status-txt" id="aTitle">TRACK CLEAR</div>
-            </div>
-            <div class="alarm-desc" id="aSub">No thermal hazard detected on track</div>
-            <div class="alarm-temp-row" id="aTemp">PEAK 36.2°C — RELAY TRIGGERED</div>
-            <div class="pb-wrap">
-              <div class="pb ok" id="pb"></div>
-            </div>
-            <div class="pb-lbl" id="pbLbl">MONITORING — <span id="pbTxt">SCANNING</span></div>
-            <button class="ack-btn" onclick="ackAlarm()">ACK ALERT</button>
-          </div>
-        </div>
-
-        <!-- THERMAL GRID -->
-        <div class="scard">
-          <div class="scard-hd">
-            <span class="scard-title">AMG8833 Thermal Grid (8×8)</span>
-            <span class="tpeak" id="maxTemp">PEAK 24.1°C</span>
-          </div>
-          <div class="tgrid" id="thermalGrid"></div>
-          <div class="tlegend" style="margin-top:6px">
-            <span>18°C COOL</span>
-            <span>⚡ THRESHOLD 30°C</span>
-            <span>HOT 42°C+</span>
-          </div>
-        </div>
-
-        <!-- TEMPERATURE GRAPH -->
-        <div class="scard graph-card">
-          <div class="scard-hd">
-            <span class="scard-title">Peak Temperature — Last 60s</span>
-            <span style="font-family:var(--mono);font-size:8px;color:var(--red)">— 30°C threshold</span>
-          </div>
-          <div class="graph-wrap">
-            <canvas id="tempCanvas"></canvas>
-          </div>
-        </div>
-
-        <!-- ALERT TIMELINE -->
-        <div class="scard timeline-card">
-          <div class="scard-hd" style="margin-bottom:6px">
-            <span class="scard-title">Alert Timeline — Last 60 min</span>
-          </div>
-          <div class="timeline-wrap" id="timelineWrap">
-            <div class="timeline-axis"></div>
-            <div class="tl-now"></div>
-          </div>
-          <div class="tl-labels">
-            <span>60m ago</span><span>45m</span><span>30m</span><span>15m</span><span>now</span>
-          </div>
-        </div>
-
-        <!-- SYSTEM CONTROLS -->
-        <div class="scard">
-          <div class="scard-hd">
-            <span class="scard-title">System Controls</span>
-          </div>
-          <div class="ctrl-row">
-            <span class="ctrl-name">Relay / LED</span>
-            <div class="ctrl-r">
-              <div class="tog on" id="relayT" onclick="togCtrl('relay')"></div><span class="tog-lbl"
-                id="relayS">ACTIVE</span>
-            </div>
-          </div>
-          <div class="ctrl-row">
-            <span class="ctrl-name"><span class="rec-dot" id="dvrDot"></span> DVR Recording</span>
-            <div class="ctrl-r">
-              <div class="tog on" id="dvrT" onclick="togCtrl('dvr')"></div><span class="tog-lbl" id="dvrS">ACTIVE</span>
-            </div>
-          </div>
-          <div class="ctrl-row">
-            <span class="ctrl-name">Thermal Polling</span>
-            <div class="ctrl-r">
-              <div class="tog on" id="thermalT" onclick="togCtrl('thermal')"></div><span class="tog-lbl"
-                id="thermalS">ACTIVE</span>
-            </div>
-          </div>
-          <div class="ctrl-row">
-            <span class="ctrl-name">Siren</span>
-            <div class="ctrl-r">
-              <div class="tog off" id="sirenT" onclick="togCtrl('siren')"></div><span class="tog-lbl"
-                id="sirenS">PENDING</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- EVENT LOG -->
-        <div class="scard log-card">
-          <div class="scard-hd">
-            <span class="scard-title">Event Log</span>
-            <span class="log-rec-badge">● REC</span>
-          </div>
-          <div class="log-list" id="logList">
-            <div class="le alert" onclick="showLogM(this)"><span class="lt">22:14:03</span>HAZARD — 36.2°C — relay
-              triggered</div>
-            <div class="le info" onclick="showLogM(this)"><span class="lt">22:11:45</span>scan complete — all sectors
-              clear</div>
-            <div class="le info" onclick="showLogM(this)"><span class="lt">22:08:12</span>system health OK — RAM 45%
-            </div>
-            <div class="le info" onclick="showLogM(this)"><span class="lt">21:55:30</span>pi connected — thermal polling
-              active</div>
-            <div class="le info" onclick="showLogM(this)"><span class="lt">21:42:19</span>DVR recording — local storage
-              active</div>
-          </div>
-        </div>
-
-      </div>
+    <div class="v-scan"></div>
+    <div class="v-vig"></div>
+    <div class="v-grad-b"></div>
+    <div class="vc tl"></div><div class="vc tr"></div>
+    <div class="vc bl"></div><div class="vc br"></div>
+    <div class="v-bar">
+      <div class="v-label">CAM_01 · SECTOR A4 · VAVUNIYA</div>
+      <div class="v-live"><div class="v-ldot"></div>LIVE</div>
     </div>
-
-    <!-- BOTTOM BAR -->
-    <footer class="bottombar">
-      <div class="btabs">
-        <div class="btab active">LIVE FEED</div>
-        <div class="btab">THERMAL</div>
-        <div class="btab">DVR STORAGE</div>
+    <div class="v-hud-l">
+      LAT 8.7542° N<br>
+      LON 80.4983° E<br>
+      SPD <span id="spd">42.5</span> KM/H
+    </div>
+    <div class="v-hud-r">
+      THERMAL 10 FPS<br>
+      VIDEO 28 FPS<br>
+      DVR <span style="color:var(--red)">● REC</span>
+    </div>
+    <div class="haz" id="hazWrap">
+      <div class="haz-box">
+        <div class="haz-label">collision risk · sector a4</div>
+        <div class="haz-title">HAZARD ON TRACK</div>
+        <div class="haz-sub" id="hazSub">thermal: 36.2°C — relay triggered</div>
       </div>
-      <div class="bstats">
-        <div class="bstat"><span class="bsk">SCAN</span><span class="bsv" id="lastScan">0.3s AGO</span></div>
-        <div class="bstat"><span class="bsk">THERMAL</span><span class="bsv">10 FPS</span></div>
-        <div class="bstat"><span class="bsk">DVR</span><span class="bsv" style="color:var(--red)">● LOCAL</span></div>
-        <div class="bstat"><span class="bsk">UPTIME</span><span class="bsv" id="uptime">0:00:00</span></div>
-      </div>
-    </footer>
-  </div>
-
-  <!-- MODALS -->
-  <div class="mbg" id="m-pi">
-    <div class="modal">
-      <div class="mh"><span class="mt">RASPBERRY PI 4 — STATUS</span><button class="mx"
-          onclick="closeM('pi')">✕</button></div>
-      <div class="mb">
-        <div class="mrow"><span class="mk">Model</span><span class="mv">Raspberry Pi 4 (8GB RAM)</span></div>
-        <div class="mrow"><span class="mk">Status</span><span class="mv ok">ONLINE</span></div>
-        <div class="mrow"><span class="mk">IP Address</span><span class="mv">192.168.1.100</span></div>
-        <div class="mrow"><span class="mk">CPU Temp</span><span class="mv warn">52°C</span></div>
-        <div class="mrow"><span class="mk">RAM Usage</span><span class="mv">45% / 8GB</span></div>
-        <div class="mrow"><span class="mk">Uptime</span><span class="mv" id="m-uptime">0:00:00</span></div>
-        <div class="mrow"><span class="mk">Remote Access</span><span class="mv ok">connect.raspberrypi.com</span></div>
-      </div>
-      <div class="mf"><button class="mbtn" onclick="closeM('pi')">CLOSE</button></div>
     </div>
   </div>
 
-  <div class="mbg" id="m-thermal">
-    <div class="modal">
-      <div class="mh"><span class="mt">AMG8833 GRID-EYE — STATUS</span><button class="mx"
-          onclick="closeM('thermal')">✕</button></div>
-      <div class="mb">
-        <div class="mrow"><span class="mk">Sensor</span><span class="mv">Panasonic AMG8833 Grid-EYE</span></div>
-        <div class="mrow"><span class="mk">Status</span><span class="mv ok">ACTIVE — POLLING</span></div>
-        <div class="mrow"><span class="mk">Resolution</span><span class="mv">8×8 pixels (64 points)</span></div>
-        <div class="mrow"><span class="mk">Type</span><span class="mv">LWIR 8–14 µm</span></div>
-        <div class="mrow"><span class="mk">Poll Rate</span><span class="mv">~10 FPS via HTTP/JSON</span></div>
-        <div class="mrow"><span class="mk">Threshold</span><span class="mv warn">ANY PIXEL > 30°C</span></div>
-        <div class="mrow"><span class="mk">Current Peak</span><span class="mv" id="mMaxTemp">24.1°C</span></div>
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+  <!-- DETECTION STATS -->
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-num red" id="statTotal">0</div>
+      <div class="stat-lbl">Detections</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" id="statLast">—</div>
+      <div class="stat-lbl">Last Event</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num green" id="statClear">0</div>
+      <div class="stat-lbl">Clear Scans</div>
+    </div>
+  </div>
+
+    <!-- ALARM STATUS -->
+    <div class="scard">
+      <div class="scard-hd">
+        <span class="scard-title">Alarm Status</span>
+        <span class="scard-badge ok" id="alarmBadge">NOMINAL</span>
       </div>
-      <div class="mf"><button class="mbtn" onclick="closeM('thermal')">CLOSE</button></div>
-    </div>
-  </div>
-
-  <div class="mbg" id="m-cam">
-    <div class="modal">
-      <div class="mh"><span class="mt">DAHUA IP CAMERA — STATUS</span><button class="mx"
-          onclick="closeM('cam')">✕</button></div>
-      <div class="mb">
-        <div class="mrow"><span class="mk">Model</span><span class="mv">Dahua IP Camera</span></div>
-        <div class="mrow"><span class="mk">Status</span><span class="mv ok">STREAMING</span></div>
-        <div class="mrow"><span class="mk">Resolution</span><span class="mv">1920×1080 Full HD</span></div>
-        <div class="mrow"><span class="mk">Protocol</span><span class="mv">RTSP — H.264</span></div>
-        <div class="mrow"><span class="mk">Frame Rate</span><span class="mv">20–30 FPS</span></div>
-        <div class="mrow"><span class="mk">Thermal Overlay</span><span class="mv ok">ACTIVE — FUSED</span></div>
+      <div id="alarmCard" class="alarm-clear">
+        <div class="alarm-state">
+          <div class="alarm-led"></div>
+          <div class="alarm-status-txt" id="aTitle">TRACK CLEAR</div>
+        </div>
+        <div class="alarm-desc" id="aSub">No thermal hazard detected on track</div>
+        <div class="alarm-temp-row" id="aTemp">PEAK 36.2°C — RELAY TRIGGERED</div>
+        <div class="pb-wrap"><div class="pb ok" id="pb"></div></div>
+        <div class="pb-lbl" id="pbLbl">MONITORING — <span id="pbTxt">SCANNING</span></div>
+        <button class="ack-btn" onclick="ackAlarm()">ACK ALERT</button>
       </div>
-      <div class="mf"><button class="mbtn" onclick="closeM('cam')">CLOSE</button></div>
     </div>
-  </div>
 
-  <div class="mbg" id="m-siren">
-    <div class="modal">
-      <div class="mh"><span class="mt">12V RELAY / SIREN — STATUS</span><button class="mx"
-          onclick="closeM('siren')">✕</button></div>
-      <div class="mb">
-        <div class="mrow"><span class="mk">Relay Module</span><span class="mv">12V Relay — Pi GPIO</span></div>
-        <div class="mrow"><span class="mk">Relay</span><span class="mv ok">CONNECTED — READY</span></div>
-        <div class="mrow"><span class="mk">LED Indicator</span><span class="mv ok">CONNECTED</span></div>
-        <div class="mrow"><span class="mk">Siren / Buzzer</span><span class="mv warn">PENDING CONNECTION</span></div>
-        <div class="mrow"><span class="mk">Trigger</span><span class="mv">ANY PIXEL > 30°C</span></div>
-        <div class="mrow"><span class="mk">Auto-Clear</span><span class="mv">YES — DROPS BELOW 30°C</span></div>
+    <!-- THERMAL GRID -->
+    <div class="scard">
+      <div class="scard-hd">
+        <span class="scard-title">AMG8833 Thermal Grid (8×8)</span>
+        <span class="tpeak" id="maxTemp">PEAK 24.1°C</span>
       </div>
-      <div class="mf"><button class="mbtn" onclick="closeM('siren')">CLOSE</button></div>
+      <div class="tgrid" id="thermalGrid"></div>
+      <div class="tlegend" style="margin-top:6px">
+        <span>18°C COOL</span>
+        <span>⚡ THRESHOLD 30°C</span>
+        <span>HOT 42°C+</span>
+      </div>
     </div>
-  </div>
 
-  <div class="mbg" id="m-log">
-    <div class="modal">
-      <div class="mh"><span class="mt">EVENT DETAIL</span><button class="mx" onclick="closeM('log')">✕</button></div>
-      <div class="mb" id="logMBody"></div>
-      <div class="mf"><button class="mbtn" onclick="closeM('log')">CLOSE</button></div>
+    <!-- TEMPERATURE GRAPH -->
+    <div class="scard graph-card">
+      <div class="scard-hd">
+        <span class="scard-title">Peak Temperature — Last 60s</span>
+        <span style="font-family:var(--mono);font-size:8px;color:var(--red)">— 30°C threshold</span>
+      </div>
+      <div class="graph-wrap">
+        <canvas id="tempCanvas"></canvas>
+      </div>
     </div>
-  </div>
 
-  <script>
-    /* FULLSCREEN */
-    function toggleFS() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => { });
-        document.getElementById('fsBtn').textContent = '⛶ EXIT FULL';
-      } else {
-        document.exitFullscreen();
-        document.getElementById('fsBtn').textContent = '⛶ FULLSCREEN';
-      }
-    }
-    document.addEventListener('keydown', e => {
-      if (e.key === 'f' || e.key === 'F') toggleFS();
-      if (e.key === 'Escape') document.getElementById('fsBtn').textContent = '⛶ FULLSCREEN';
+    <!-- ALERT TIMELINE -->
+    <div class="scard timeline-card">
+      <div class="scard-hd" style="margin-bottom:6px">
+        <span class="scard-title">Alert Timeline — Last 60 min</span>
+      </div>
+      <div class="timeline-wrap" id="timelineWrap">
+        <div class="timeline-axis"></div>
+        <div class="tl-now"></div>
+      </div>
+      <div class="tl-labels">
+        <span>60m ago</span><span>45m</span><span>30m</span><span>15m</span><span>now</span>
+      </div>
+    </div>
+
+    <!-- SYSTEM CONTROLS -->
+    <div class="scard">
+      <div class="scard-hd">
+        <span class="scard-title">System Controls</span>
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-name">Relay / LED</span>
+        <div class="ctrl-r"><div class="tog on" id="relayT" onclick="togCtrl('relay')"></div><span class="tog-lbl" id="relayS">ACTIVE</span></div>
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-name"><span class="rec-dot" id="dvrDot"></span> DVR Recording</span>
+        <div class="ctrl-r"><div class="tog on" id="dvrT" onclick="togCtrl('dvr')"></div><span class="tog-lbl" id="dvrS">ACTIVE</span></div>
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-name">Thermal Polling</span>
+        <div class="ctrl-r"><div class="tog on" id="thermalT" onclick="togCtrl('thermal')"></div><span class="tog-lbl" id="thermalS">ACTIVE</span></div>
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-name">Siren</span>
+        <div class="ctrl-r"><div class="tog off" id="sirenT" onclick="togCtrl('siren')"></div><span class="tog-lbl" id="sirenS">PENDING</span></div>
+      </div>
+    </div>
+
+    <!-- EVENT LOG -->
+    <div class="scard log-card">
+      <div class="scard-hd">
+        <span class="scard-title">Event Log</span>
+        <span class="log-rec-badge">● REC</span>
+      </div>
+      <div class="log-list" id="logList">
+        <div class="le alert" onclick="showLogM(this)"><span class="lt">22:14:03</span>HAZARD — 36.2°C — relay triggered</div>
+        <div class="le info"  onclick="showLogM(this)"><span class="lt">22:11:45</span>scan complete — all sectors clear</div>
+        <div class="le info"  onclick="showLogM(this)"><span class="lt">22:08:12</span>system health OK — RAM 45%</div>
+        <div class="le info"  onclick="showLogM(this)"><span class="lt">21:55:30</span>pi connected — thermal polling active</div>
+        <div class="le info"  onclick="showLogM(this)"><span class="lt">21:42:19</span>DVR recording — local storage active</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- BOTTOM BAR -->
+<footer class="bottombar">
+  <div class="btabs">
+    <div class="btab active">LIVE FEED</div>
+    <div class="btab">THERMAL</div>
+    <div class="btab">DVR STORAGE</div>
+  </div>
+  <div class="bstats">
+    <div class="bstat"><span class="bsk">SCAN</span><span class="bsv" id="lastScan">0.3s AGO</span></div>
+    <div class="bstat"><span class="bsk">THERMAL</span><span class="bsv">10 FPS</span></div>
+    <div class="bstat"><span class="bsk">DVR</span><span class="bsv" style="color:var(--red)">● LOCAL</span></div>
+    <div class="bstat"><span class="bsk">UPTIME</span><span class="bsv" id="uptime">0:00:00</span></div>
+  </div>
+</footer>
+</div>
+
+<!-- MODALS -->
+<div class="mbg" id="m-pi">
+  <div class="modal">
+    <div class="mh"><span class="mt">RASPBERRY PI 4 — STATUS</span><button class="mx" onclick="closeM('pi')">✕</button></div>
+    <div class="mb">
+      <div class="mrow"><span class="mk">Model</span><span class="mv">Raspberry Pi 4 (8GB RAM)</span></div>
+      <div class="mrow"><span class="mk">Status</span><span class="mv ok">ONLINE</span></div>
+      <div class="mrow"><span class="mk">IP Address</span><span class="mv">192.168.1.100</span></div>
+      <div class="mrow"><span class="mk">CPU Temp</span><span class="mv warn">52°C</span></div>
+      <div class="mrow"><span class="mk">RAM Usage</span><span class="mv">45% / 8GB</span></div>
+      <div class="mrow"><span class="mk">Uptime</span><span class="mv" id="m-uptime">0:00:00</span></div>
+      <div class="mrow"><span class="mk">Remote Access</span><span class="mv ok">connect.raspberrypi.com</span></div>
+    </div>
+    <div class="mf"><button class="mbtn" onclick="closeM('pi')">CLOSE</button></div>
+  </div>
+</div>
+
+<div class="mbg" id="m-thermal">
+  <div class="modal">
+    <div class="mh"><span class="mt">AMG8833 GRID-EYE — STATUS</span><button class="mx" onclick="closeM('thermal')">✕</button></div>
+    <div class="mb">
+      <div class="mrow"><span class="mk">Sensor</span><span class="mv">Panasonic AMG8833 Grid-EYE</span></div>
+      <div class="mrow"><span class="mk">Status</span><span class="mv ok">ACTIVE — POLLING</span></div>
+      <div class="mrow"><span class="mk">Resolution</span><span class="mv">8×8 pixels (64 points)</span></div>
+      <div class="mrow"><span class="mk">Type</span><span class="mv">LWIR 8–14 µm</span></div>
+      <div class="mrow"><span class="mk">Poll Rate</span><span class="mv">~10 FPS via HTTP/JSON</span></div>
+      <div class="mrow"><span class="mk">Threshold</span><span class="mv warn">ANY PIXEL > 30°C</span></div>
+      <div class="mrow"><span class="mk">Current Peak</span><span class="mv" id="mMaxTemp">24.1°C</span></div>
+    </div>
+    <div class="mf"><button class="mbtn" onclick="closeM('thermal')">CLOSE</button></div>
+  </div>
+</div>
+
+<div class="mbg" id="m-cam">
+  <div class="modal">
+    <div class="mh"><span class="mt">DAHUA IP CAMERA — STATUS</span><button class="mx" onclick="closeM('cam')">✕</button></div>
+    <div class="mb">
+      <div class="mrow"><span class="mk">Model</span><span class="mv">Dahua IP Camera</span></div>
+      <div class="mrow"><span class="mk">Status</span><span class="mv ok">STREAMING</span></div>
+      <div class="mrow"><span class="mk">Resolution</span><span class="mv">1920×1080 Full HD</span></div>
+      <div class="mrow"><span class="mk">Protocol</span><span class="mv">RTSP — H.264</span></div>
+      <div class="mrow"><span class="mk">Frame Rate</span><span class="mv">20–30 FPS</span></div>
+      <div class="mrow"><span class="mk">Thermal Overlay</span><span class="mv ok">ACTIVE — FUSED</span></div>
+    </div>
+    <div class="mf"><button class="mbtn" onclick="closeM('cam')">CLOSE</button></div>
+  </div>
+</div>
+
+<div class="mbg" id="m-siren">
+  <div class="modal">
+    <div class="mh"><span class="mt">12V RELAY / SIREN — STATUS</span><button class="mx" onclick="closeM('siren')">✕</button></div>
+    <div class="mb">
+      <div class="mrow"><span class="mk">Relay Module</span><span class="mv">12V Relay — Pi GPIO</span></div>
+      <div class="mrow"><span class="mk">Relay</span><span class="mv ok">CONNECTED — READY</span></div>
+      <div class="mrow"><span class="mk">LED Indicator</span><span class="mv ok">CONNECTED</span></div>
+      <div class="mrow"><span class="mk">Siren / Buzzer</span><span class="mv warn">PENDING CONNECTION</span></div>
+      <div class="mrow"><span class="mk">Trigger</span><span class="mv">ANY PIXEL > 30°C</span></div>
+      <div class="mrow"><span class="mk">Auto-Clear</span><span class="mv">YES — DROPS BELOW 30°C</span></div>
+    </div>
+    <div class="mf"><button class="mbtn" onclick="closeM('siren')">CLOSE</button></div>
+  </div>
+</div>
+
+<div class="mbg" id="m-log">
+  <div class="modal">
+    <div class="mh"><span class="mt">EVENT DETAIL</span><button class="mx" onclick="closeM('log')">✕</button></div>
+    <div class="mb" id="logMBody"></div>
+    <div class="mf"><button class="mbtn" onclick="closeM('log')">CLOSE</button></div>
+  </div>
+</div>
+
+<script>
+/* FULLSCREEN */
+function toggleFS(){
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen().catch(()=>{});
+    document.getElementById('fsBtn').textContent='⛶ EXIT FULL';
+  } else {
+    document.exitFullscreen();
+    document.getElementById('fsBtn').textContent='⛶ FULLSCREEN';
+  }
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='f'||e.key==='F') toggleFS();
+  if(e.key==='Escape') document.getElementById('fsBtn').textContent='⛶ FULLSCREEN';
+});
+
+/* DETECTION STATS — start clean, updated by real events only */
+let totalDetections = 0, clearScans = 0;
+
+function updateStats(type){
+  if(type==='alert'){
+    totalDetections++;
+    document.getElementById('statTotal').textContent=totalDetections;
+    const now=new Date();
+    document.getElementById('statLast').textContent=
+      now.toTimeString().slice(0,5);
+  } else {
+    clearScans++;
+    document.getElementById('statClear').textContent=clearScans;
+  }
+}
+
+/* TEMPERATURE GRAPH */
+const canvas=document.getElementById('tempCanvas');
+const ctx2=canvas.getContext('2d');
+const GRAPH_POINTS=120;
+let tempHistory=Array(GRAPH_POINTS).fill(22);
+
+function resizeCanvas(){
+  canvas.width=canvas.offsetWidth*window.devicePixelRatio||canvas.offsetWidth;
+  canvas.height=canvas.offsetHeight*window.devicePixelRatio||canvas.offsetHeight;
+}
+resizeCanvas();
+window.addEventListener('resize',resizeCanvas);
+
+function drawGraph(){
+  const w=canvas.width,h=canvas.height;
+  const dpr=window.devicePixelRatio||1;
+  ctx2.clearRect(0,0,w,h);
+
+  const dark=document.documentElement.getAttribute('data-theme')==='dark';
+  const gridCol=dark?'rgba(45,62,50,0.6)':'rgba(180,200,185,0.5)';
+  const textCol=dark?'rgba(74,99,80,0.8)':'rgba(107,143,116,0.8)';
+
+  // threshold line at 30°C
+  const minT=15,maxT=45;
+  const threshY=h-(30-minT)/(maxT-minT)*h;
+
+  // grid lines
+  ctx2.strokeStyle=gridCol;ctx2.lineWidth=dpr*.5;
+  [20,25,30,35,40].forEach(t=>{
+    const y=h-(t-minT)/(maxT-minT)*h;
+    ctx2.beginPath();ctx2.moveTo(0,y);ctx2.lineTo(w,y);ctx2.stroke();
+    ctx2.fillStyle=textCol;
+    ctx2.font=`${7*dpr}px 'IBM Plex Mono'`;
+    ctx2.fillText(t+'°',2,y-2*dpr);
+  });
+
+  // threshold highlight
+  ctx2.strokeStyle=dark?'rgba(239,68,68,0.4)':'rgba(220,38,38,0.4)';
+  ctx2.lineWidth=dpr;ctx2.setLineDash([3*dpr,3*dpr]);
+  ctx2.beginPath();ctx2.moveTo(0,threshY);ctx2.lineTo(w,threshY);ctx2.stroke();
+  ctx2.setLineDash([]);
+
+  // area fill
+  const grad=ctx2.createLinearGradient(0,0,0,h);
+  grad.addColorStop(0,dark?'rgba(239,68,68,0.25)':'rgba(220,38,38,0.15)');
+  grad.addColorStop(1,'rgba(0,0,0,0)');
+  ctx2.fillStyle=grad;
+  ctx2.beginPath();
+  tempHistory.forEach((t,i)=>{
+    const x=i/(GRAPH_POINTS-1)*w;
+    const y=h-(t-minT)/(maxT-minT)*h;
+    i===0?ctx2.moveTo(x,y):ctx2.lineTo(x,y);
+  });
+  ctx2.lineTo(w,h);ctx2.lineTo(0,h);ctx2.closePath();ctx2.fill();
+
+  // line
+  ctx2.strokeStyle=dark?'#2dd4bf':'#0d9488';
+  ctx2.lineWidth=dpr*1.5;ctx2.lineJoin='round';
+  ctx2.beginPath();
+  tempHistory.forEach((t,i)=>{
+    const x=i/(GRAPH_POINTS-1)*w;
+    const y=h-(t-minT)/(maxT-minT)*h;
+    i===0?ctx2.moveTo(x,y):ctx2.lineTo(x,y);
+  });
+  ctx2.stroke();
+
+  // current value dot
+  const lastT=tempHistory[tempHistory.length-1];
+  const lastX=w,lastY=h-(lastT-minT)/(maxT-minT)*h;
+  const dotColor=lastT>=30?(dark?'#ef4444':'#dc2626'):(dark?'#2dd4bf':'#0d9488');
+  ctx2.fillStyle=dotColor;
+  ctx2.beginPath();ctx2.arc(lastX-dpr,lastY,3*dpr,0,Math.PI*2);ctx2.fill();
+}
+setInterval(drawGraph,500);
+
+/* ALERT TIMELINE */
+let timelineEvents=[{time:Date.now()-864000,type:'alert'}];
+
+function addTimelineDot(type){
+  timelineEvents.push({time:Date.now(),type});
+  renderTimeline();
+}
+function renderTimeline(){
+  const wrap=document.getElementById('timelineWrap');
+  // remove old dots
+  wrap.querySelectorAll('.tl-dot').forEach(d=>d.remove());
+  const now=Date.now();
+  const range=60*60*1000; // 60 min
+  timelineEvents.forEach(ev=>{
+    const age=now-ev.time;
+    if(age>range)return;
+    const pct=(1-age/range)*100;
+    const dot=document.createElement('div');
+    dot.className='tl-dot '+ev.type;
+    dot.style.left=pct+'%';
+    dot.title=new Date(ev.time).toTimeString().slice(0,8)+' — '+ev.type;
+    wrap.appendChild(dot);
+  });
+}
+renderTimeline();
+setInterval(renderTimeline,30000);
+
+/* THEME */
+function toggleTheme(){
+  const h=document.documentElement;
+  const dark=h.getAttribute('data-theme')==='dark';
+  h.setAttribute('data-theme',dark?'light':'dark');
+  document.getElementById('themeBtn').textContent=dark?'🌙 DARK':'☀ LIGHT';
+  setTimeout(drawGraph,50);
+}
+
+/* AUDIO */
+let audioCtx=null,alarmInt=null,soundReady=false;
+document.addEventListener('click',()=>{
+  if(soundReady)return;
+  try{audioCtx=new(window.AudioContext||window.webkitAudioContext)();soundReady=true;}catch(e){}
+},{once:true});
+function beep(f,d,v){
+  if(!soundReady||!audioCtx)return;
+  audioCtx.resume().then(()=>{
+    try{
+      const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+      o.connect(g);g.connect(audioCtx.destination);
+      o.type='square';o.frequency.setValueAtTime(f,audioCtx.currentTime);
+      g.gain.setValueAtTime(v||.22,audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+d);
+      o.start(audioCtx.currentTime);o.stop(audioCtx.currentTime+d);
+    }catch(e){}
+  });
+}
+function startAlarm(){
+  stopAlarm();
+  const play=()=>{beep(880,.15,.28);setTimeout(()=>beep(660,.15,.22),190);};
+  play();alarmInt=setInterval(play,820);
+}
+function stopAlarm(){if(alarmInt){clearInterval(alarmInt);alarmInt=null;}}
+
+/* ═══════════════════════════════════════════════════
+   THERMAL DATA — REAL API POLLING
+   ═══════════════════════════════════════════════════
+   Configure these two URLs to match Hasira's endpoints.
+   THERMAL_URL: should return JSON like:
+     {"max": 36.2, "grid": [21.1, 22.3, ...64 values]}
+   If the endpoint is not yet exposed via cloudflare,
+   use the local LAN IP e.g. "http://192.168.1.73/data"
+   ═══════════════════════════════════════════════════ */
+const THERMAL_URL = 'https://railway-safety-monitor-srilanka.trycloudflare.com/thermal';
+const POLL_INTERVAL_MS = 200; // ~10 FPS to match the Pi's polling rate
+const HAZARD_THRESHOLD = 30;  // °C — same as Pi's Python script
+
+/* thermal grid cells */
+const tg = document.getElementById('thermalGrid');
+let cells = [], isHazard = false, sensorConnected = false;
+for(let i=0;i<64;i++){
+  const c=document.createElement('div');
+  c.className='tc';
+  c.style.background='#1c2420'; // dark placeholder until real data
+  tg.appendChild(c);
+  cells.push(c);
+}
+function tClr(t){
+  const r=Math.max(0,Math.min(1,(t-18)/26));
+  return `hsl(${(1-r)*240},80%,${26+r*32}%)`;
+}
+
+/* sensor connection status indicator */
+function setSensorStatus(connected){
+  sensorConnected = connected;
+  const badge = document.getElementById('alarmBadge');
+  if(!connected && !isHazard){
+    badge.textContent = 'NO SENSOR';
+    badge.className = 'scard-badge warn';
+    document.getElementById('maxTemp').textContent = 'PEAK —';
+    document.getElementById('mMaxTemp').textContent = '—';
+  }
+}
+
+/* render real 8×8 grid from sensor */
+function renderGrid(gridArray, maxTemp){
+  gridArray.forEach((t, i) => {
+    cells[i].style.background = tClr(t);
+  });
+  const s = maxTemp.toFixed(1) + '°C';
+  document.getElementById('maxTemp').textContent = 'PEAK ' + s;
+  document.getElementById('mMaxTemp').textContent = s;
+  tempHistory.push(maxTemp);
+  if(tempHistory.length > GRAPH_POINTS) tempHistory.shift();
+  if(maxTemp >= HAZARD_THRESHOLD && !isHazard) triggerHazard(maxTemp);
+  if(maxTemp < HAZARD_THRESHOLD - 2 && isHazard) autoResolve(); // 2°C hysteresis
+}
+
+/* POLL REAL THERMAL DATA FROM PI */
+async function pollThermal(){
+  try {
+    const res = await fetch(THERMAL_URL, {
+      signal: AbortSignal.timeout(1500) // 1.5s timeout
     });
-
-    /* DETECTION STATS — start clean, updated by real events only */
-    let totalDetections = 0, clearScans = 0;
-
-    function updateStats(type) {
-      if (type === 'alert') {
-        totalDetections++;
-        document.getElementById('statTotal').textContent = totalDetections;
-        const now = new Date();
-        document.getElementById('statLast').textContent =
-          now.toTimeString().slice(0, 5);
-      } else {
-        clearScans++;
-        document.getElementById('statClear').textContent = clearScans;
-      }
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    /*
+      Expected format from Pi:
+      { "max": 36.2, "grid": [t1, t2, ... t64] }
+      If Pi returns a different format, adjust below.
+    */
+    if(!sensorConnected){
+      setSensorStatus(true);
+      addLog('thermal sensor connected — live data active','info');
     }
-
-    /* TEMPERATURE GRAPH */
-    const canvas = document.getElementById('tempCanvas');
-    const ctx2 = canvas.getContext('2d');
-    const GRAPH_POINTS = 120;
-    let tempHistory = Array(GRAPH_POINTS).fill(22);
-
-    function resizeCanvas() {
-      canvas.width = canvas.offsetWidth * window.devicePixelRatio || canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight * window.devicePixelRatio || canvas.offsetHeight;
+    const grid = data.grid || data.temperatures || data.data || [];
+    const maxT = data.max || data.max_temp || Math.max(...grid);
+    if(grid.length === 64) renderGrid(grid, maxT);
+  } catch(err){
+    /* endpoint not yet reachable — show waiting state, don't crash */
+    if(sensorConnected){
+      setSensorStatus(false);
+      addLog('thermal sensor disconnected — check endpoint','warn');
     }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+  }
+}
+setInterval(pollThermal, POLL_INTERVAL_MS);
+pollThermal(); // immediate first call
 
-    function drawGraph() {
-      const w = canvas.width, h = canvas.height;
-      const dpr = window.devicePixelRatio || 1;
-      ctx2.clearRect(0, 0, w, h);
+/* ALARM */
+let acked = false;
+function triggerHazard(temp){
+  if(isHazard && !acked) return;
+  isHazard = true; acked = false;
+  const t = temp.toFixed(1);
+  document.getElementById('alarmCard').className = 'alarm-hazard';
+  document.getElementById('aTitle').textContent = 'HAZARD DETECTED';
+  document.getElementById('aSub').textContent = 'Warm body on track — relay triggered';
+  document.getElementById('aTemp').textContent = 'PEAK ' + t + '°C — RELAY TRIGGERED';
+  document.getElementById('alarmBadge').textContent = 'HAZARD';
+  document.getElementById('alarmBadge').className = 'scard-badge alert';
+  document.getElementById('hazWrap').classList.add('show');
+  document.getElementById('hazSub').textContent = 'thermal: ' + t + '°C — relay triggered';
+  document.getElementById('pb').className = 'pb hot';
+  document.getElementById('pbTxt').textContent = 'HAZARD ACTIVE';
+  addLog('HAZARD — ' + t + '°C — relay triggered', 'alert');
+  updateStats('alert');
+  addTimelineDot('alert');
+  startAlarm();
+}
+function ackAlarm(){
+  acked = true; stopAlarm();
+  document.getElementById('pbLbl').textContent = 'ACKNOWLEDGED — MONITORING';
+  addLog('alert acknowledged by operator', 'warn');
+}
+function autoResolve(){
+  isHazard = false; acked = false; stopAlarm();
+  document.getElementById('alarmCard').className = 'alarm-clear';
+  document.getElementById('aTitle').textContent = 'TRACK CLEAR';
+  document.getElementById('aSub').textContent = 'No thermal hazard detected on track';
+  document.getElementById('alarmBadge').textContent = 'NOMINAL';
+  document.getElementById('alarmBadge').className = 'scard-badge ok';
+  document.getElementById('hazWrap').classList.remove('show');
+  document.getElementById('pb').className = 'pb ok';
+  document.getElementById('pbLbl').textContent = 'MONITORING — SCANNING';
+  document.getElementById('pbTxt').textContent = 'SCANNING';
+  addLog('track cleared — below threshold', 'info');
+  updateStats('clear');
+  addTimelineDot('info');
+}
 
-      const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-      const gridCol = dark ? 'rgba(45,62,50,0.6)' : 'rgba(180,200,185,0.5)';
-      const textCol = dark ? 'rgba(74,99,80,0.8)' : 'rgba(107,143,116,0.8)';
+/* CONTROLS */
+function togCtrl(id){
+  const el=document.getElementById(id+'T'),st=document.getElementById(id+'S');
+  const on=el.classList.contains('on');
+  el.classList.toggle('on',!on);el.classList.toggle('off',on);
+  if(id==='dvr'){
+    const dot=document.getElementById('dvrDot');
+    if(!on){st.textContent='ACTIVE';dot.style.display='inline-block';addLog('DVR recording resumed','info');}
+    else{st.textContent='PAUSED';dot.style.display='none';addLog('DVR recording paused','warn');}
+  } else if(id==='siren'){
+    const p=document.getElementById('sirenPill');
+    if(!on){st.textContent='ACTIVE';p.className='status-pill ok';addLog('siren activated','warn');}
+    else{st.textContent='PENDING';p.className='status-pill warn';addLog('siren deactivated','info');}
+  } else {
+    st.textContent=on?'PAUSED':'ACTIVE';
+    addLog(id+' '+(on?'paused':'resumed'),'info');
+  }
+}
 
-      // threshold line at 30°C
-      const minT = 15, maxT = 45;
-      const threshY = h - (30 - minT) / (maxT - minT) * h;
-
-      // grid lines
-      ctx2.strokeStyle = gridCol; ctx2.lineWidth = dpr * .5;
-      [20, 25, 30, 35, 40].forEach(t => {
-        const y = h - (t - minT) / (maxT - minT) * h;
-        ctx2.beginPath(); ctx2.moveTo(0, y); ctx2.lineTo(w, y); ctx2.stroke();
-        ctx2.fillStyle = textCol;
-        ctx2.font = `${7 * dpr}px 'IBM Plex Mono'`;
-        ctx2.fillText(t + '°', 2, y - 2 * dpr);
-      });
-
-      // threshold highlight
-      ctx2.strokeStyle = dark ? 'rgba(239,68,68,0.4)' : 'rgba(220,38,38,0.4)';
-      ctx2.lineWidth = dpr; ctx2.setLineDash([3 * dpr, 3 * dpr]);
-      ctx2.beginPath(); ctx2.moveTo(0, threshY); ctx2.lineTo(w, threshY); ctx2.stroke();
-      ctx2.setLineDash([]);
-
-      // area fill
-      const grad = ctx2.createLinearGradient(0, 0, 0, h);
-      grad.addColorStop(0, dark ? 'rgba(239,68,68,0.25)' : 'rgba(220,38,38,0.15)');
-      grad.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx2.fillStyle = grad;
-      ctx2.beginPath();
-      tempHistory.forEach((t, i) => {
-        const x = i / (GRAPH_POINTS - 1) * w;
-        const y = h - (t - minT) / (maxT - minT) * h;
-        i === 0 ? ctx2.moveTo(x, y) : ctx2.lineTo(x, y);
-      });
-      ctx2.lineTo(w, h); ctx2.lineTo(0, h); ctx2.closePath(); ctx2.fill();
-
-      // line
-      ctx2.strokeStyle = dark ? '#2dd4bf' : '#0d9488';
-      ctx2.lineWidth = dpr * 1.5; ctx2.lineJoin = 'round';
-      ctx2.beginPath();
-      tempHistory.forEach((t, i) => {
-        const x = i / (GRAPH_POINTS - 1) * w;
-        const y = h - (t - minT) / (maxT - minT) * h;
-        i === 0 ? ctx2.moveTo(x, y) : ctx2.lineTo(x, y);
-      });
-      ctx2.stroke();
-
-      // current value dot
-      const lastT = tempHistory[tempHistory.length - 1];
-      const lastX = w, lastY = h - (lastT - minT) / (maxT - minT) * h;
-      const dotColor = lastT >= 30 ? (dark ? '#ef4444' : '#dc2626') : (dark ? '#2dd4bf' : '#0d9488');
-      ctx2.fillStyle = dotColor;
-      ctx2.beginPath(); ctx2.arc(lastX - dpr, lastY, 3 * dpr, 0, Math.PI * 2); ctx2.fill();
-    }
-    setInterval(drawGraph, 500);
-
-    /* ALERT TIMELINE */
-    let timelineEvents = [{ time: Date.now() - 864000, type: 'alert' }];
-
-    function addTimelineDot(type) {
-      timelineEvents.push({ time: Date.now(), type });
-      renderTimeline();
-    }
-    function renderTimeline() {
-      const wrap = document.getElementById('timelineWrap');
-      // remove old dots
-      wrap.querySelectorAll('.tl-dot').forEach(d => d.remove());
-      const now = Date.now();
-      const range = 60 * 60 * 1000; // 60 min
-      timelineEvents.forEach(ev => {
-        const age = now - ev.time;
-        if (age > range) return;
-        const pct = (1 - age / range) * 100;
-        const dot = document.createElement('div');
-        dot.className = 'tl-dot ' + ev.type;
-        dot.style.left = pct + '%';
-        dot.title = new Date(ev.time).toTimeString().slice(0, 8) + ' — ' + ev.type;
-        wrap.appendChild(dot);
-      });
-    }
-    renderTimeline();
-    setInterval(renderTimeline, 30000);
-
-    /* THEME */
-    function toggleTheme() {
-      const h = document.documentElement;
-      const dark = h.getAttribute('data-theme') === 'dark';
-      h.setAttribute('data-theme', dark ? 'light' : 'dark');
-      document.getElementById('themeBtn').textContent = dark ? '🌙 DARK' : '☀ LIGHT';
-      setTimeout(drawGraph, 50);
-    }
-
-    /* AUDIO */
-    let audioCtx = null, alarmInt = null, soundReady = false;
-    document.addEventListener('click', () => {
-      if (soundReady) return;
-      try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); soundReady = true; } catch (e) { }
-    }, { once: true });
-    function beep(f, d, v) {
-      if (!soundReady || !audioCtx) return;
-      audioCtx.resume().then(() => {
-        try {
-          const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-          o.connect(g); g.connect(audioCtx.destination);
-          o.type = 'square'; o.frequency.setValueAtTime(f, audioCtx.currentTime);
-          g.gain.setValueAtTime(v || .22, audioCtx.currentTime);
-          g.gain.exponentialRampToValueAtTime(.001, audioCtx.currentTime + d);
-          o.start(audioCtx.currentTime); o.stop(audioCtx.currentTime + d);
-        } catch (e) { }
-      });
-    }
-    function startAlarm() {
-      stopAlarm();
-      const play = () => { beep(880, .15, .28); setTimeout(() => beep(660, .15, .22), 190); };
-      play(); alarmInt = setInterval(play, 820);
-    }
-    function stopAlarm() { if (alarmInt) { clearInterval(alarmInt); alarmInt = null; } }
-
-    /* ═══════════════════════════════════════════════════
-       THERMAL DATA — REAL API POLLING
-       ═══════════════════════════════════════════════════
-       Configure these two URLs to match Hasira's endpoints.
-       THERMAL_URL: should return JSON like:
-         {"max": 36.2, "grid": [21.1, 22.3, ...64 values]}
-       If the endpoint is not yet exposed via cloudflare,
-       use the local LAN IP e.g. "http://192.168.1.73/data"
-       ═══════════════════════════════════════════════════ */
-    const THERMAL_URL = 'https://railway-safety-monitor-srilanka.trycloudflare.com/thermal';
-    const POLL_INTERVAL_MS = 200; // ~10 FPS to match the Pi's polling rate
-    const HAZARD_THRESHOLD = 30;  // °C — same as Pi's Python script
-
-    /* thermal grid cells */
-    const tg = document.getElementById('thermalGrid');
-    let cells = [], isHazard = false, sensorConnected = false;
-    for (let i = 0; i < 64; i++) {
-      const c = document.createElement('div');
-      c.className = 'tc';
-      c.style.background = '#1c2420'; // dark placeholder until real data
-      tg.appendChild(c);
-      cells.push(c);
-    }
-    function tClr(t) {
-      const r = Math.max(0, Math.min(1, (t - 18) / 26));
-      return `hsl(${(1 - r) * 240},80%,${26 + r * 32}%)`;
-    }
-
-    /* sensor connection status indicator */
-    function setSensorStatus(connected) {
-      sensorConnected = connected;
-      const badge = document.getElementById('alarmBadge');
-      if (!connected && !isHazard) {
-        badge.textContent = 'NO SENSOR';
-        badge.className = 'scard-badge warn';
-        document.getElementById('maxTemp').textContent = 'PEAK —';
-        document.getElementById('mMaxTemp').textContent = '—';
-      }
-    }
-
-    /* render real 8×8 grid from sensor */
-    function renderGrid(gridArray, maxTemp) {
-      gridArray.forEach((t, i) => {
-        cells[i].style.background = tClr(t);
-      });
-      const s = maxTemp.toFixed(1) + '°C';
-      document.getElementById('maxTemp').textContent = 'PEAK ' + s;
-      document.getElementById('mMaxTemp').textContent = s;
-      tempHistory.push(maxTemp);
-      if (tempHistory.length > GRAPH_POINTS) tempHistory.shift();
-      if (maxTemp >= HAZARD_THRESHOLD && !isHazard) triggerHazard(maxTemp);
-      if (maxTemp < HAZARD_THRESHOLD - 2 && isHazard) autoResolve(); // 2°C hysteresis
-    }
-
-    /* POLL REAL THERMAL DATA FROM PI */
-    async function pollThermal() {
-      try {
-        const res = await fetch(THERMAL_URL, {
-          signal: AbortSignal.timeout(1500) // 1.5s timeout
-        });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const data = await res.json();
-        /*
-          Expected format from Pi:
-          { "max": 36.2, "grid": [t1, t2, ... t64] }
-          If Pi returns a different format, adjust below.
-        */
-        if (!sensorConnected) {
-          setSensorStatus(true);
-          addLog('thermal sensor connected — live data active', 'info');
-        }
-        const grid = data.grid || data.temperatures || data.data || [];
-        const maxT = data.max || data.max_temp || Math.max(...grid);
-        if (grid.length === 64) renderGrid(grid, maxT);
-      } catch (err) {
-        /* endpoint not yet reachable — show waiting state, don't crash */
-        if (sensorConnected) {
-          setSensorStatus(false);
-          addLog('thermal sensor disconnected — check endpoint', 'warn');
-        }
-      }
-    }
-    setInterval(pollThermal, POLL_INTERVAL_MS);
-    pollThermal(); // immediate first call
-
-    /* ALARM */
-    let acked = false;
-    function triggerHazard(temp) {
-      if (isHazard && !acked) return;
-      isHazard = true; acked = false;
-      const t = temp.toFixed(1);
-      document.getElementById('alarmCard').className = 'alarm-hazard';
-      document.getElementById('aTitle').textContent = 'HAZARD DETECTED';
-      document.getElementById('aSub').textContent = 'Warm body on track — relay triggered';
-      document.getElementById('aTemp').textContent = 'PEAK ' + t + '°C — RELAY TRIGGERED';
-      document.getElementById('alarmBadge').textContent = 'HAZARD';
-      document.getElementById('alarmBadge').className = 'scard-badge alert';
-      document.getElementById('hazWrap').classList.add('show');
-      document.getElementById('hazSub').textContent = 'thermal: ' + t + '°C — relay triggered';
-      document.getElementById('pb').className = 'pb hot';
-      document.getElementById('pbTxt').textContent = 'HAZARD ACTIVE';
-      addLog('HAZARD — ' + t + '°C — relay triggered', 'alert');
-      updateStats('alert');
-      addTimelineDot('alert');
-      startAlarm();
-    }
-    function ackAlarm() {
-      acked = true; stopAlarm();
-      document.getElementById('pbLbl').textContent = 'ACKNOWLEDGED — MONITORING';
-      addLog('alert acknowledged by operator', 'warn');
-    }
-    function autoResolve() {
-      isHazard = false; acked = false; stopAlarm();
-      document.getElementById('alarmCard').className = 'alarm-clear';
-      document.getElementById('aTitle').textContent = 'TRACK CLEAR';
-      document.getElementById('aSub').textContent = 'No thermal hazard detected on track';
-      document.getElementById('alarmBadge').textContent = 'NOMINAL';
-      document.getElementById('alarmBadge').className = 'scard-badge ok';
-      document.getElementById('hazWrap').classList.remove('show');
-      document.getElementById('pb').className = 'pb ok';
-      document.getElementById('pbLbl').textContent = 'MONITORING — SCANNING';
-      document.getElementById('pbTxt').textContent = 'SCANNING';
-      addLog('track cleared — below threshold', 'info');
-      updateStats('clear');
-      addTimelineDot('info');
-    }
-
-    /* CONTROLS */
-    function togCtrl(id) {
-      const el = document.getElementById(id + 'T'), st = document.getElementById(id + 'S');
-      const on = el.classList.contains('on');
-      el.classList.toggle('on', !on); el.classList.toggle('off', on);
-      if (id === 'dvr') {
-        const dot = document.getElementById('dvrDot');
-        if (!on) { st.textContent = 'ACTIVE'; dot.style.display = 'inline-block'; addLog('DVR recording resumed', 'info'); }
-        else { st.textContent = 'PAUSED'; dot.style.display = 'none'; addLog('DVR recording paused', 'warn'); }
-      } else if (id === 'siren') {
-        const p = document.getElementById('sirenPill');
-        if (!on) { st.textContent = 'ACTIVE'; p.className = 'status-pill ok'; addLog('siren activated', 'warn'); }
-        else { st.textContent = 'PENDING'; p.className = 'status-pill warn'; addLog('siren deactivated', 'info'); }
-      } else {
-        st.textContent = on ? 'PAUSED' : 'ACTIVE';
-        addLog(id + ' ' + (on ? 'paused' : 'resumed'), 'info');
-      }
-    }
-
-    /* LOG */
-    function addLog(msg, type) {
-      const l = document.getElementById('logList');
-      const t = new Date().toTimeString().slice(0, 8);
-      const e = document.createElement('div');
-      e.className = 'le ' + (type || 'info');
-      e.innerHTML = '<span class="lt">' + t + '</span>' + msg;
-      e.onclick = () => showLogM(e);
-      l.prepend(e);
-      while (l.children.length > 30) l.removeChild(l.lastChild);
-    }
-    function showLogM(el) {
-      const t = el.querySelector('.lt')?.textContent || '—';
-      const msg = el.textContent.replace(t, '').trim();
-      const isA = el.classList.contains('alert'), isW = el.classList.contains('warn');
-      document.getElementById('logMBody').innerHTML = `
+/* LOG */
+function addLog(msg,type){
+  const l=document.getElementById('logList');
+  const t=new Date().toTimeString().slice(0,8);
+  const e=document.createElement('div');
+  e.className='le '+(type||'info');
+  e.innerHTML='<span class="lt">'+t+'</span>'+msg;
+  e.onclick=()=>showLogM(e);
+  l.prepend(e);
+  while(l.children.length>30)l.removeChild(l.lastChild);
+}
+function showLogM(el){
+  const t=el.querySelector('.lt')?.textContent||'—';
+  const msg=el.textContent.replace(t,'').trim();
+  const isA=el.classList.contains('alert'),isW=el.classList.contains('warn');
+  document.getElementById('logMBody').innerHTML=`
     <div class="mrow"><span class="mk">Timestamp</span><span class="mv">${t}</span></div>
-    <div class="mrow"><span class="mk">Event Type</span><span class="mv ${isA ? 'al' : isW ? 'warn' : 'ok'}">${isA ? 'HAZARD DETECTION' : isW ? 'WARNING' : 'SYSTEM INFO'}</span></div>
+    <div class="mrow"><span class="mk">Event Type</span><span class="mv ${isA?'al':isW?'warn':'ok'}">${isA?'HAZARD DETECTION':isW?'WARNING':'SYSTEM INFO'}</span></div>
     <div class="mrow"><span class="mk">Message</span><span class="mv">${msg}</span></div>
     <div class="mrow"><span class="mk">Location</span><span class="mv">Sector A4 — Vavuniya Region</span></div>
     <div class="mrow"><span class="mk">Storage</span><span class="mv ok">SAVED TO LOCAL DVR ✓</span></div>`;
-      showM('log');
-    }
+  showM('log');
+}
 
-    /* MODALS */
-    function showM(id) { document.getElementById('m-' + id).classList.add('show') }
-    function closeM(id) { document.getElementById('m-' + id).classList.remove('show') }
-    document.querySelectorAll('.mbg').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('show') }));
+/* MODALS */
+function showM(id){document.getElementById('m-'+id).classList.add('show')}
+function closeM(id){document.getElementById('m-'+id).classList.remove('show')}
+document.querySelectorAll('.mbg').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show')}));
 
-    /* TICKERS */
-    let lsMs = Date.now(), sec = 0;
-    setInterval(() => { const d = ((Date.now() - lsMs) / 1000).toFixed(1); document.getElementById('lastScan').textContent = d + 's AGO'; if (d > 0.4) lsMs = Date.now(); }, 100);
-    setInterval(() => document.getElementById('spd').textContent = (40 + Math.random() * 8).toFixed(1), 2200);
-    setInterval(() => {
-      sec++;
-      const h = String(Math.floor(sec / 3600)).padStart(1, '0');
-      const m = String(Math.floor((sec % 3600) / 60)).padStart(2, '0');
-      const s = String(sec % 60).padStart(2, '0');
-      const str = h + ':' + m + ':' + s;
-      document.getElementById('uptime').textContent = str;
-      document.getElementById('m-uptime').textContent = str;
-    }, 1000);
-  </script>
+/* TICKERS */
+let lsMs=Date.now(),sec=0;
+setInterval(()=>{const d=((Date.now()-lsMs)/1000).toFixed(1);document.getElementById('lastScan').textContent=d+'s AGO';if(d>0.4)lsMs=Date.now();},100);
+setInterval(()=>document.getElementById('spd').textContent=(40+Math.random()*8).toFixed(1),2200);
+setInterval(()=>{
+  sec++;
+  const h=String(Math.floor(sec/3600)).padStart(1,'0');
+  const m=String(Math.floor((sec%3600)/60)).padStart(2,'0');
+  const s=String(sec%60).padStart(2,'0');
+  const str=h+':'+m+':'+s;
+  document.getElementById('uptime').textContent=str;
+  document.getElementById('m-uptime').textContent=str;
+},1000);
+</script>
 </body>
-
 </html>
