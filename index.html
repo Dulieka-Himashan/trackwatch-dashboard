@@ -1249,13 +1249,12 @@
            style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1"/>
     -->
         <!-- LIVE STREAM — real Pi feed via cloudflare tunnel -->
-        <iframe id="streamFrame"
-          src="https://www.youtube.com/embed/WzKJhyBt7J0?autoplay=1&mute=1&controls=0&loop=1&playlist=WzKJhyBt7J0&modestbranding=1&rel=0&iv_load_policy=3&showinfo=0&disablekb=1&fs=0&playsinline=1"
+        <iframe id="streamFrame" src="https://railway-safety-monitor-srilanka.trycloudflare.com/train_live/"
           style="position:absolute;inset:0;width:100%;height:100%;border:none;z-index:1;background:#000" allowfullscreen
           allow="autoplay"></iframe>
         <!-- fallback: if stream is MJPEG use this img tag instead of iframe above
     <img id="streamFrame"
-      src="https://www.youtube.com/embed/WzKJhyBt7J0?autoplay=1&mute=1&controls=0&loop=1&playlist=WzKJhyBt7J0&modestbranding=1&rel=0&iv_load_policy=3&showinfo=0&disablekb=1&fs=0&playsinline=1"
+      src="https://railway-safety-monitor-srilanka.trycloudflare.com/train_live/"
       style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:1;background:#000"
     />
     -->
@@ -1687,15 +1686,6 @@
     }
     function stopAlarm() { if (alarmInt) { clearInterval(alarmInt); alarmInt = null; } }
 
-    /* ═══════════════════════════════════════════════════
-       THERMAL DATA — REAL API POLLING
-       ═══════════════════════════════════════════════════
-       Configure these two URLs to match Hasira's endpoints.
-       THERMAL_URL: should return JSON like:
-         {"max": 36.2, "grid": [21.1, 22.3, ...64 values]}
-       If the endpoint is not yet exposed via cloudflare,
-       use the local LAN IP e.g. "http://192.168.1.73/data"
-       ═══════════════════════════════════════════════════ */
     const THERMAL_URL = 'https://railway-safety-monitor-srilanka.trycloudflare.com/thermal';
     const POLL_INTERVAL_MS = 200; // ~10 FPS to match the Pi's polling rate
     const HAZARD_THRESHOLD = 30;  // °C — same as Pi's Python script
