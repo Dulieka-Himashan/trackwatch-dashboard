@@ -1215,7 +1215,7 @@
     <!-- TOPBAR -->
     <header class="topbar">
       <div class="logo">
-        TRACK<span class="logo-accent">WATCH</span>
+        Elephant<span class="logo-accent">Eye</span>
         <span class="logo-sep">/</span>
         <span class="logo-sub">STATION MONITORING · SRI LANKA RAILWAYS</span>
       </div>
@@ -1249,12 +1249,12 @@
            style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1"/>
     -->
         <!-- LIVE STREAM — real Pi feed via cloudflare tunnel -->
-        <iframe id="streamFrame" src="https://walnut-trinity-upcoming-vancouver.trycloudflare.com/train_live/"
+        <iframe id="streamFrame" src="https://mouse-subscriber-edward-workers.trycloudflare.com/fused_safety_stream/"
           style="position:absolute;inset:0;width:100%;height:100%;border:none;z-index:1;background:#000" allowfullscreen
           allow="autoplay"></iframe>
         <!-- fallback: if stream is MJPEG use this img tag instead of iframe above
     <img id="streamFrame"
-      src="https://walnut-trinity-upcoming-vancouver.trycloudflare.com/train_live/"
+      src="https://mouse-subscriber-edward-workers.trycloudflare.com/fused_safety_stream/"
       style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:1;background:#000"
     />
     -->
@@ -1330,13 +1330,13 @@
           </div>
         </div>
 
-<!-- THERMAL GRID HIDDEN — sensor not yet connected -->
 
-        <!-- TEMPERATURE GRAPH -->
+
+        <!-- TEMP GRAPH -->
         <div class="scard graph-card">
           <div class="scard-hd">
-            <span class="scard-title">Peak Temperature — Last 60s</span>
-            <span style="font-family:var(--mono);font-size:8px;color:var(--red)">— 30°C threshold</span>
+            <span class="scard-title">Peak Temperature — 60s</span>
+            <span class="scard-badge warn">THRESHOLD 30°C</span>
           </div>
           <div class="graph-wrap">
             <canvas id="tempCanvas"></canvas>
@@ -1345,16 +1345,14 @@
 
         <!-- ALERT TIMELINE -->
         <div class="scard timeline-card">
-          <div class="scard-hd" style="margin-bottom:6px">
-            <span class="scard-title">Alert Timeline — Last 60 min</span>
+          <div class="scard-hd">
+            <span class="scard-title">Alert Timeline — 60 min</span>
           </div>
           <div class="timeline-wrap" id="timelineWrap">
             <div class="timeline-axis"></div>
             <div class="tl-now"></div>
           </div>
-          <div class="tl-labels">
-            <span>60m ago</span><span>45m</span><span>30m</span><span>15m</span><span>now</span>
-          </div>
+          <div class="tl-labels"><span>-60m</span><span>-30m</span><span>now</span></div>
         </div>
 
         <!-- SYSTEM CONTROLS -->
@@ -1363,30 +1361,31 @@
             <span class="scard-title">System Controls</span>
           </div>
           <div class="ctrl-row">
-            <span class="ctrl-name">Relay / LED</span>
+            <div class="ctrl-name">Relay / LED Alarm</div>
             <div class="ctrl-r">
-              <div class="tog on" id="relayT" onclick="togCtrl('relay')"></div><span class="tog-lbl"
-                id="relayS">ACTIVE</span>
+              <div class="tog on" id="relayT" onclick="togCtrl('relay')"></div>
+              <span class="tog-lbl" id="relayS">ACTIVE</span>
             </div>
           </div>
           <div class="ctrl-row">
-            <span class="ctrl-name"><span class="rec-dot" id="dvrDot"></span> DVR Recording</span>
+            <div class="ctrl-name"><span class="rec-dot" id="dvrDot"></span> DVR Recording</div>
             <div class="ctrl-r">
-              <div class="tog on" id="dvrT" onclick="togCtrl('dvr')"></div><span class="tog-lbl" id="dvrS">ACTIVE</span>
+              <div class="tog on" id="dvrT" onclick="togCtrl('dvr')"></div>
+              <span class="tog-lbl" id="dvrS">ACTIVE</span>
             </div>
           </div>
           <div class="ctrl-row">
-            <span class="ctrl-name">Thermal Polling</span>
+            <div class="ctrl-name">Thermal Polling</div>
             <div class="ctrl-r">
-              <div class="tog on" id="thermalT" onclick="togCtrl('thermal')"></div><span class="tog-lbl"
-                id="thermalS">ACTIVE</span>
+              <div class="tog on" id="thermalT" onclick="togCtrl('thermal')"></div>
+              <span class="tog-lbl" id="thermalS">ACTIVE</span>
             </div>
           </div>
           <div class="ctrl-row">
-            <span class="ctrl-name">Siren</span>
+            <div class="ctrl-name">Siren / Buzzer</div>
             <div class="ctrl-r">
-              <div class="tog off" id="sirenT" onclick="togCtrl('siren')"></div><span class="tog-lbl"
-                id="sirenS">PENDING</span>
+              <div class="tog off" id="sirenT" onclick="togCtrl('siren')"></div>
+              <span class="tog-lbl" id="sirenS">PENDING</span>
             </div>
           </div>
         </div>
@@ -1398,16 +1397,7 @@
             <span class="log-rec-badge">● REC</span>
           </div>
           <div class="log-list" id="logList">
-            <div class="le alert" onclick="showLogM(this)"><span class="lt">22:14:03</span>HAZARD — 36.2°C — relay
-              triggered</div>
-            <div class="le info" onclick="showLogM(this)"><span class="lt">22:11:45</span>scan complete — all sectors
-              clear</div>
-            <div class="le info" onclick="showLogM(this)"><span class="lt">22:08:12</span>system health OK — RAM 45%
-            </div>
-            <div class="le info" onclick="showLogM(this)"><span class="lt">21:55:30</span>pi connected — thermal polling
-              active</div>
-            <div class="le info" onclick="showLogM(this)"><span class="lt">21:42:19</span>DVR recording — local storage
-              active</div>
+
           </div>
         </div>
 
@@ -1511,9 +1501,9 @@
 
     const firebaseConfig = {
       apiKey: "AIzaSyBGY3FBTxcY2kNxXBsPEFy_AkSehTxgWAs",
-      authDomain: "elephanteye-2ae91.firebaseapp.com",
-      projectId: "elephanteye-2ae91",
-      storageBucket: "elephanteye-2ae91.firebasestorage.app",
+      authDomain: "trackwatch-2ae91.firebaseapp.com",
+      projectId: "trackwatch-2ae91",
+      storageBucket: "trackwatch-2ae91.firebasestorage.app",
       messagingSenderId: "765683549371",
       appId: "1:765683549371:web:1b28b723efa3c6b82b159e"
     };
@@ -1713,24 +1703,14 @@
        If the endpoint is not yet exposed via cloudflare,
        use the local LAN IP e.g. "http://192.168.1.73/data"
        ═══════════════════════════════════════════════════ */
-    const THERMAL_URL = 'https://walnut-trinity-upcoming-vancouver.trycloudflare.com/thermal';
+    // UPDATE THIS URL when tunnel changes — just change the base URL here
+    const TUNNEL_BASE = 'https://mouse-subscriber-edward-workers.trycloudflare.com';
+    const THERMAL_URL = 'http://localhost:8081/thermal';
     const POLL_INTERVAL_MS = 200; // ~10 FPS to match the Pi's polling rate
     const HAZARD_THRESHOLD = 30;  // °C — same as Pi's Python script
 
-    /* thermal grid cells */
-    const tg = document.getElementById('thermalGrid');
-    let cells = [], isHazard = false, sensorConnected = false;
-    for (let i = 0; i < 64; i++) {
-      const c = document.createElement('div');
-      c.className = 'tc';
-      c.style.background = '#1c2420'; // dark placeholder until real data
-      tg.appendChild(c);
-      cells.push(c);
-    }
-    function tClr(t) {
-      const r = Math.max(0, Math.min(1, (t - 18) / 26));
-      return `hsl(${(1 - r) * 240},80%,${26 + r * 32}%)`;
-    }
+    /* thermal state */
+    let isHazard = false, sensorConnected = false;
 
     /* sensor connection status indicator */
     function setSensorStatus(connected) {
@@ -1739,18 +1719,13 @@
       if (!connected && !isHazard) {
         badge.textContent = 'NO SENSOR';
         badge.className = 'scard-badge warn';
-        document.getElementById('maxTemp').textContent = 'PEAK —';
         document.getElementById('mMaxTemp').textContent = '—';
       }
     }
 
-    /* render real 8×8 grid from sensor */
+    /* process thermal data from sensor */
     function renderGrid(gridArray, maxTemp) {
-      gridArray.forEach((t, i) => {
-        cells[i].style.background = tClr(t);
-      });
       const s = maxTemp.toFixed(1) + '°C';
-      document.getElementById('maxTemp').textContent = 'PEAK ' + s;
       document.getElementById('mMaxTemp').textContent = s;
       tempHistory.push(maxTemp);
       if (tempHistory.length > GRAPH_POINTS) tempHistory.shift();
@@ -1878,6 +1853,15 @@
     /* MODALS */
     function showM(id) { document.getElementById('m-' + id).classList.add('show') }
     function closeM(id) { document.getElementById('m-' + id).classList.remove('show') }
+
+    /* EXPOSE TO GLOBAL SCOPE — needed because script is type=module */
+    window.toggleTheme = toggleTheme;
+    window.toggleFS = toggleFS;
+    window.ackAlarm = ackAlarm;
+    window.togCtrl = togCtrl;
+    window.showM = showM;
+    window.closeM = closeM;
+    window.showLogM = showLogM;
     document.querySelectorAll('.mbg').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('show') }));
 
     /* TICKERS */
