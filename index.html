@@ -1221,8 +1221,8 @@
       </div>
       <div class="tb-sep"></div>
       <div class="tb-right">
-        <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">☀ LIGHT</button>
-        <button class="fs-btn" onclick="toggleFS()" id="fsBtn">⛶ FULLSCREEN</button>
+        <button class="theme-toggle" id="themeBtn">☀ LIGHT</button>
+        <button class="fs-btn" id="fsBtn">⛶ FULLSCREEN</button>
         <div class="status-pill ok" onclick="showM('pi')">
           <div class="pdot"></div>PI
         </div>
@@ -1249,9 +1249,12 @@
            style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1"/>
     -->
         <!-- LIVE STREAM — real Pi feed via cloudflare tunnel -->
-        <iframe id="streamFrame" src="https://mouse-subscriber-edward-workers.trycloudflare.com/fused_safety_stream/"
-          style="position:absolute;inset:0;width:100%;height:100%;border:none;z-index:1;background:#000" allowfullscreen
-          allow="autoplay"></iframe>
+        <img id="streamFrame" src="https://mouse-subscriber-edward-workers.trycloudflare.com/fused_safety_stream/"
+          style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;background:#000"
+          onerror="this.style.display='none'" />
+        <div id="streamOffline"
+          style="position:absolute;inset:0;z-index:1;background:#000;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:11px;color:#333;letter-spacing:.1em;">
+          NO SIGNAL — STREAM OFFLINE</div>
         <!-- fallback: if stream is MJPEG use this img tag instead of iframe above
     <img id="streamFrame"
       src="https://mouse-subscriber-edward-workers.trycloudflare.com/fused_safety_stream/"
@@ -1326,7 +1329,7 @@
               <div class="pb ok" id="pb"></div>
             </div>
             <div class="pb-lbl" id="pbLbl">MONITORING — <span id="pbTxt">SCANNING</span></div>
-            <button class="ack-btn" onclick="ackAlarm()">ACK ALERT</button>
+            <button class="ack-btn" id="ackBtn">ACK ALERT</button>
           </div>
         </div>
 
@@ -1862,7 +1865,43 @@
     window.showM = showM;
     window.closeM = closeM;
     window.showLogM = showLogM;
+
+    // Modal backdrop click to close
     document.querySelectorAll('.mbg').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('show') }));
+
+    // Topbar buttons
+    document.getElementById('themeBtn').addEventListener('click', toggleTheme);
+    document.getElementById('fsBtn').addEventListener('click', toggleFS);
+
+    // ACK button
+    document.getElementById('ackBtn').addEventListener('click', ackAlarm);
+
+    // Toggle controls
+    document.getElementById('relayT').addEventListener('click', () => togCtrl('relay'));
+    document.getElementById('dvrT').addEventListener('click', () => togCtrl('dvr'));
+    document.getElementById('thermalT').addEventListener('click', () => togCtrl('thermal'));
+    document.getElementById('sirenT').addEventListener('click', () => togCtrl('siren'));
+
+    // Status pills — open modals
+    document.getElementById('sirenPill').addEventListener('click', () => showM('siren'));
+    document.querySelectorAll('.status-pill').forEach(pill => {
+      const fn = pill.getAttribute('onclick');
+      if (fn) {
+        pill.removeAttribute('onclick');
+        const id = fn.match(/showM\('(.+?)'\)/)?.[1];
+        if (id) pill.addEventListener('click', () => showM(id));
+      }
+    });
+
+    // Modal close buttons (✕ and CLOSE)
+    document.querySelectorAll('.mx, .mbtn').forEach(btn => {
+      const fn = btn.getAttribute('onclick');
+      if (fn) {
+        btn.removeAttribute('onclick');
+        const id = fn.match(/closeM\('(.+?)'\)/)?.[1];
+        if (id) btn.addEventListener('click', () => closeM(id));
+      }
+    });
 
     /* TICKERS */
     let lsMs = Date.now(), sec = 0;
