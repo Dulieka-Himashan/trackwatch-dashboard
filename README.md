@@ -1,13 +1,13 @@
 # trackwatch-dashboard
 Real-time station monitoring dashboard for the Multimodal Intelligent Transportation Safety System — Elephant &amp; Human Train Collision Prevention, Sri Lanka Railways.
-# 🐘 TRACKWATCH — Multimodal Intelligent Transportation Safety System
+# 🐘 ElephantEye - Real-Time Wildlife Collision Prevention System
 ### Elephant & Human Train Collision Prevention · Sri Lanka Railways
 
 ---
 
 ## 📌 Project Overview
 
-TRACKWATCH is a real-time hazard detection system mounted on a locomotive that detects warm-bodied animals or humans on the railway track using thermal infrared sensing combined with HD video. The system triggers an alarm even in total darkness, rain, or fog — making it effective 24/7 in all weather conditions.
+ELEPHANTEYE is a real-time hazard detection system mounted on a locomotive that detects warm-bodied animals or humans on the railway track using thermal infrared sensing combined with HD video. The system triggers an alarm even in total darkness, rain, or fog — making it effective 24/7 in all weather conditions.
 
 This repository contains the **Station Monitoring Web Dashboard** — the frontend interface used by station operators to monitor live track conditions, view thermal detection data, and track hazard events in real time.
 
