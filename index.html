@@ -85,7 +85,6 @@
       height: 100vh
     }
 
-    /* ─── TOPBAR ─────────────────────────────────────── */
     .topbar {
       display: flex;
       align-items: center;
@@ -223,30 +222,17 @@
       }
     }
 
-    /* ─── MAIN ───────────────────────────────────────── */
     .main {
       display: grid;
       grid-template-columns: 1fr 300px;
       overflow: hidden
     }
 
-    /* ─── VIDEO ──────────────────────────────────────── */
     .vpanel {
       position: relative;
       overflow: hidden;
       background: #000;
       border-right: 1px solid var(--border);
-    }
-
-    .vpanel iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-      pointer-events: none;
-      z-index: 1;
-      background: #000;
     }
 
     .v-scan {
@@ -280,7 +266,6 @@
       background: linear-gradient(transparent, var(--bg));
     }
 
-    /* corner brackets */
     .vc {
       position: absolute;
       width: 12px;
@@ -315,7 +300,6 @@
       border-width: 0 1px 1px 0
     }
 
-    /* top overlay bar */
     .v-bar {
       position: absolute;
       top: 0;
@@ -360,7 +344,6 @@
       animation: blink .8s infinite
     }
 
-    /* HUD overlays */
     .v-hud-l {
       position: absolute;
       bottom: 14px;
@@ -388,7 +371,6 @@
       text-shadow: 0 1px 4px rgba(0, 0, 0, .8);
     }
 
-    /* hazard overlay */
     .haz {
       position: absolute;
       inset: 0;
@@ -453,7 +435,6 @@
       letter-spacing: .04em;
     }
 
-    /* ─── SIDEBAR ────────────────────────────────────── */
     .sidebar {
       display: flex;
       flex-direction: column;
@@ -462,7 +443,6 @@
       transition: background .25s;
     }
 
-    /* section card */
     .scard {
       border-bottom: 1px solid var(--border);
       padding: 12px 14px;
@@ -511,7 +491,6 @@
       background: var(--red-bg)
     }
 
-    /* ─── ALARM ──────────────────────────────────────── */
     .alarm-state {
       display: flex;
       align-items: center;
@@ -579,7 +558,6 @@
       display: block
     }
 
-    /* progress bar */
     .pb-wrap {
       height: 2px;
       background: var(--surface3);
@@ -634,37 +612,6 @@
       display: block
     }
 
-    /* ─── THERMAL ────────────────────────────────────── */
-    .tgrid {
-      display: grid;
-      grid-template-columns: repeat(8, 1fr);
-      gap: 2px;
-      margin-bottom: 6px
-    }
-
-    .tc {
-      aspect-ratio: 1;
-      border-radius: 1px;
-      transition: background .2s
-    }
-
-    .tlegend {
-      display: flex;
-      justify-content: space-between;
-      font-family: var(--mono);
-      font-size: 8px;
-      color: var(--text3);
-      letter-spacing: .04em;
-    }
-
-    .tpeak {
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--amber)
-    }
-
-    /* ─── CONTROLS ───────────────────────────────────── */
     .ctrl-row {
       display: flex;
       align-items: center;
@@ -704,7 +651,6 @@
       gap: 7px
     }
 
-    /* toggle */
     .tog {
       width: 28px;
       height: 14px;
@@ -756,7 +702,6 @@
       color: var(--text3)
     }
 
-    /* ─── LOG ────────────────────────────────────────── */
     .log-card {
       flex-shrink: 0;
     }
@@ -831,7 +776,6 @@
       font-weight: 500;
     }
 
-    /* ─── BOTTOM BAR ─────────────────────────────────── */
     .bottombar {
       display: flex;
       align-items: center;
@@ -895,7 +839,6 @@
       font-weight: 500
     }
 
-    /* ─── DETECTION STATS ────────────────────────────── */
     .stats-row {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -941,7 +884,6 @@
       text-transform: uppercase;
     }
 
-    /* ─── TEMP GRAPH ─────────────────────────────────── */
     .graph-card {
       flex-shrink: 0
     }
@@ -957,20 +899,6 @@
       display: block
     }
 
-    .graph-threshold {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      font-family: var(--mono);
-      font-size: 7px;
-      color: var(--red);
-      opacity: .6;
-      letter-spacing: .06em;
-      pointer-events: none;
-    }
-
-    /* ─── ALERT TIMELINE ─────────────────────────────── */
     .timeline-card {
       flex-shrink: 0
     }
@@ -1041,7 +969,6 @@
       margin-top: 3px;
     }
 
-    /* ─── FULLSCREEN ─────────────────────────────────── */
     .fs-btn {
       display: flex;
       align-items: center;
@@ -1069,7 +996,6 @@
       height: 100vh !important
     }
 
-    /* ─── MODALS ─────────────────────────────────────── */
     .mbg {
       position: fixed;
       inset: 0;
@@ -1212,7 +1138,6 @@
 <body>
   <div class="app">
 
-    <!-- TOPBAR -->
     <header class="topbar">
       <div class="logo">
         Elephant<span class="logo-accent">Eye</span>
@@ -1223,44 +1148,35 @@
       <div class="tb-right">
         <button class="theme-toggle" id="themeBtn">☀ LIGHT</button>
         <button class="fs-btn" id="fsBtn">⛶ FULLSCREEN</button>
-        <div class="status-pill ok" onclick="showM('pi')">
+        <div class="status-pill ok" id="pillPi">
           <div class="pdot"></div>PI
         </div>
-        <div class="status-pill ok" onclick="showM('thermal')">
+        <div class="status-pill ok" id="pillThermal">
           <div class="pdot"></div>THERMAL
         </div>
-        <div class="status-pill ok" onclick="showM('cam')">
+        <div class="status-pill ok" id="pillCam">
           <div class="pdot"></div>CAMERA
         </div>
-        <div class="status-pill warn" id="sirenPill" onclick="showM('siren')">
+        <div class="status-pill warn" id="sirenPill">
           <div class="pdot"></div>SIREN
         </div>
       </div>
     </header>
 
-    <!-- MAIN -->
     <div class="main">
 
-      <!-- VIDEO -->
       <div class="vpanel">
-        <!--
-      CONNECT REAL STREAM: replace iframe with
-      <img src="http://PI_IP:PORT/stream"
-           style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1"/>
-    -->
-        <!-- LIVE STREAM — real Pi feed via cloudflare tunnel -->
-        <img id="streamFrame" src="https://mouse-subscriber-edward-workers.trycloudflare.com/fused_safety_stream/"
-          style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;background:#000"
-          onerror="this.style.display='none'" />
+        <!-- STREAM: iframe for HLS/webpage, swap for <img> if pure MJPEG -->
+        <iframe src="https://charlotte-except-finish-carry.trycloudflare.com/fused_safety_stream/"
+          style="position:absolute;inset:0;width:100%;height:100%;border:none;z-index:1;background:#000"
+          allowfullscreen>
+        </iframe>
+        <!-- offline backdrop sits BEHIND iframe at z-index:0 -->
         <div id="streamOffline"
-          style="position:absolute;inset:0;z-index:1;background:#000;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:11px;color:#333;letter-spacing:.1em;">
-          NO SIGNAL — STREAM OFFLINE</div>
-        <!-- fallback: if stream is MJPEG use this img tag instead of iframe above
-    <img id="streamFrame"
-      src="https://mouse-subscriber-edward-workers.trycloudflare.com/fused_safety_stream/"
-      style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:1;background:#000"
-    />
-    -->
+          style="position:absolute;inset:0;z-index:0;background:#000;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:11px;color:#333;letter-spacing:.1em;">
+          NO SIGNAL — STREAM OFFLINE
+        </div>
+
         <div class="v-scan"></div>
         <div class="v-vig"></div>
         <div class="v-grad-b"></div>
@@ -1268,6 +1184,7 @@
         <div class="vc tr"></div>
         <div class="vc bl"></div>
         <div class="vc br"></div>
+
         <div class="v-bar">
           <div class="v-label">CAM_01 · SECTOR A4 · VAVUNIYA</div>
           <div class="v-live">
@@ -1275,14 +1192,10 @@
           </div>
         </div>
         <div class="v-hud-l">
-          LAT 8.7542° N<br>
-          LON 80.4983° E<br>
-          SPD <span id="spd">42.5</span> KM/H
+          LAT 8.7542° N<br>LON 80.4983° E<br>SPD <span id="spd">42.5</span> KM/H
         </div>
         <div class="v-hud-r">
-          THERMAL 10 FPS<br>
-          VIDEO 28 FPS<br>
-          DVR <span style="color:var(--red)">● REC</span>
+          THERMAL 10 FPS<br>VIDEO 28 FPS<br>DVR <span style="color:var(--red)">● REC</span>
         </div>
         <div class="haz" id="hazWrap">
           <div class="haz-box">
@@ -1293,10 +1206,8 @@
         </div>
       </div>
 
-      <!-- SIDEBAR -->
       <div class="sidebar">
 
-        <!-- DETECTION STATS -->
         <div class="stats-row">
           <div class="stat-box">
             <div class="stat-num red" id="statTotal">0</div>
@@ -1312,7 +1223,6 @@
           </div>
         </div>
 
-        <!-- ALARM STATUS -->
         <div class="scard">
           <div class="scard-hd">
             <span class="scard-title">Alarm Status</span>
@@ -1333,24 +1243,16 @@
           </div>
         </div>
 
-
-
-        <!-- TEMP GRAPH -->
         <div class="scard graph-card">
           <div class="scard-hd">
             <span class="scard-title">Peak Temperature — 60s</span>
             <span class="scard-badge warn">THRESHOLD 30°C</span>
           </div>
-          <div class="graph-wrap">
-            <canvas id="tempCanvas"></canvas>
-          </div>
+          <div class="graph-wrap"><canvas id="tempCanvas"></canvas></div>
         </div>
 
-        <!-- ALERT TIMELINE -->
         <div class="scard timeline-card">
-          <div class="scard-hd">
-            <span class="scard-title">Alert Timeline — 60 min</span>
-          </div>
+          <div class="scard-hd"><span class="scard-title">Alert Timeline — 60 min</span></div>
           <div class="timeline-wrap" id="timelineWrap">
             <div class="timeline-axis"></div>
             <div class="tl-now"></div>
@@ -1358,61 +1260,54 @@
           <div class="tl-labels"><span>-60m</span><span>-30m</span><span>now</span></div>
         </div>
 
-        <!-- SYSTEM CONTROLS -->
         <div class="scard">
-          <div class="scard-hd">
-            <span class="scard-title">System Controls</span>
-          </div>
+          <div class="scard-hd"><span class="scard-title">System Controls</span></div>
           <div class="ctrl-row">
             <div class="ctrl-name">Relay / LED Alarm</div>
             <div class="ctrl-r">
-              <div class="tog on" id="relayT" onclick="togCtrl('relay')"></div>
+              <div class="tog on" id="relayT"></div>
               <span class="tog-lbl" id="relayS">ACTIVE</span>
             </div>
           </div>
           <div class="ctrl-row">
             <div class="ctrl-name"><span class="rec-dot" id="dvrDot"></span> DVR Recording</div>
             <div class="ctrl-r">
-              <div class="tog on" id="dvrT" onclick="togCtrl('dvr')"></div>
+              <div class="tog on" id="dvrT"></div>
               <span class="tog-lbl" id="dvrS">ACTIVE</span>
             </div>
           </div>
           <div class="ctrl-row">
             <div class="ctrl-name">Thermal Polling</div>
             <div class="ctrl-r">
-              <div class="tog on" id="thermalT" onclick="togCtrl('thermal')"></div>
+              <div class="tog on" id="thermalT"></div>
               <span class="tog-lbl" id="thermalS">ACTIVE</span>
             </div>
           </div>
           <div class="ctrl-row">
             <div class="ctrl-name">Siren / Buzzer</div>
             <div class="ctrl-r">
-              <div class="tog off" id="sirenT" onclick="togCtrl('siren')"></div>
+              <div class="tog off" id="sirenT"></div>
               <span class="tog-lbl" id="sirenS">PENDING</span>
             </div>
           </div>
         </div>
 
-        <!-- EVENT LOG -->
         <div class="scard log-card">
           <div class="scard-hd">
             <span class="scard-title">Event Log</span>
             <span class="log-rec-badge">● REC</span>
           </div>
-          <div class="log-list" id="logList">
-
-          </div>
+          <div class="log-list" id="logList"></div>
         </div>
 
       </div>
     </div>
 
-    <!-- BOTTOM BAR -->
     <footer class="bottombar">
       <div class="btabs">
-        <div class="btab active">LIVE FEED</div>
-        <div class="btab">THERMAL</div>
-        <div class="btab">DVR STORAGE</div>
+        <div class="btab active" id="tabFeed">LIVE FEED</div>
+        <div class="btab" id="tabThermal">THERMAL</div>
+        <div class="btab" id="tabDvr">DVR STORAGE</div>
       </div>
       <div class="bstats">
         <div class="bstat"><span class="bsk">SCAN</span><span class="bsv" id="lastScan">0.3s AGO</span></div>
@@ -1426,8 +1321,7 @@
   <!-- MODALS -->
   <div class="mbg" id="m-pi">
     <div class="modal">
-      <div class="mh"><span class="mt">RASPBERRY PI 4 — STATUS</span><button class="mx"
-          onclick="closeM('pi')">✕</button></div>
+      <div class="mh"><span class="mt">RASPBERRY PI 4 — STATUS</span><button class="mx" id="closepi">✕</button></div>
       <div class="mb">
         <div class="mrow"><span class="mk">Model</span><span class="mv">Raspberry Pi 4 (8GB RAM)</span></div>
         <div class="mrow"><span class="mk">Status</span><span class="mv ok">ONLINE</span></div>
@@ -1437,14 +1331,14 @@
         <div class="mrow"><span class="mk">Uptime</span><span class="mv" id="m-uptime">0:00:00</span></div>
         <div class="mrow"><span class="mk">Remote Access</span><span class="mv ok">connect.raspberrypi.com</span></div>
       </div>
-      <div class="mf"><button class="mbtn" onclick="closeM('pi')">CLOSE</button></div>
+      <div class="mf"><button class="mbtn" id="closepib">CLOSE</button></div>
     </div>
   </div>
 
   <div class="mbg" id="m-thermal">
     <div class="modal">
-      <div class="mh"><span class="mt">AMG8833 GRID-EYE — STATUS</span><button class="mx"
-          onclick="closeM('thermal')">✕</button></div>
+      <div class="mh"><span class="mt">AMG8833 GRID-EYE — STATUS</span><button class="mx" id="closethermal">✕</button>
+      </div>
       <div class="mb">
         <div class="mrow"><span class="mk">Sensor</span><span class="mv">Panasonic AMG8833 Grid-EYE</span></div>
         <div class="mrow"><span class="mk">Status</span><span class="mv ok">ACTIVE — POLLING</span></div>
@@ -1452,16 +1346,15 @@
         <div class="mrow"><span class="mk">Type</span><span class="mv">LWIR 8–14 µm</span></div>
         <div class="mrow"><span class="mk">Poll Rate</span><span class="mv">~10 FPS via HTTP/JSON</span></div>
         <div class="mrow"><span class="mk">Threshold</span><span class="mv warn">ANY PIXEL > 30°C</span></div>
-        <div class="mrow"><span class="mk">Current Peak</span><span class="mv" id="mMaxTemp">24.1°C</span></div>
+        <div class="mrow"><span class="mk">Current Peak</span><span class="mv" id="mMaxTemp">—</span></div>
       </div>
-      <div class="mf"><button class="mbtn" onclick="closeM('thermal')">CLOSE</button></div>
+      <div class="mf"><button class="mbtn" id="closethermalb">CLOSE</button></div>
     </div>
   </div>
 
   <div class="mbg" id="m-cam">
     <div class="modal">
-      <div class="mh"><span class="mt">DAHUA IP CAMERA — STATUS</span><button class="mx"
-          onclick="closeM('cam')">✕</button></div>
+      <div class="mh"><span class="mt">DAHUA IP CAMERA — STATUS</span><button class="mx" id="closecam">✕</button></div>
       <div class="mb">
         <div class="mrow"><span class="mk">Model</span><span class="mv">Dahua IP Camera</span></div>
         <div class="mrow"><span class="mk">Status</span><span class="mv ok">STREAMING</span></div>
@@ -1470,14 +1363,14 @@
         <div class="mrow"><span class="mk">Frame Rate</span><span class="mv">20–30 FPS</span></div>
         <div class="mrow"><span class="mk">Thermal Overlay</span><span class="mv ok">ACTIVE — FUSED</span></div>
       </div>
-      <div class="mf"><button class="mbtn" onclick="closeM('cam')">CLOSE</button></div>
+      <div class="mf"><button class="mbtn" id="closecamb">CLOSE</button></div>
     </div>
   </div>
 
   <div class="mbg" id="m-siren">
     <div class="modal">
-      <div class="mh"><span class="mt">12V RELAY / SIREN — STATUS</span><button class="mx"
-          onclick="closeM('siren')">✕</button></div>
+      <div class="mh"><span class="mt">12V RELAY / SIREN — STATUS</span><button class="mx" id="closesiren">✕</button>
+      </div>
       <div class="mb">
         <div class="mrow"><span class="mk">Relay Module</span><span class="mv">12V Relay — Pi GPIO</span></div>
         <div class="mrow"><span class="mk">Relay</span><span class="mv ok">CONNECTED — READY</span></div>
@@ -1486,15 +1379,15 @@
         <div class="mrow"><span class="mk">Trigger</span><span class="mv">ANY PIXEL > 30°C</span></div>
         <div class="mrow"><span class="mk">Auto-Clear</span><span class="mv">YES — DROPS BELOW 30°C</span></div>
       </div>
-      <div class="mf"><button class="mbtn" onclick="closeM('siren')">CLOSE</button></div>
+      <div class="mf"><button class="mbtn" id="closesirenb">CLOSE</button></div>
     </div>
   </div>
 
   <div class="mbg" id="m-log">
     <div class="modal">
-      <div class="mh"><span class="mt">EVENT DETAIL</span><button class="mx" onclick="closeM('log')">✕</button></div>
+      <div class="mh"><span class="mt">EVENT DETAIL</span><button class="mx" id="closelog">✕</button></div>
       <div class="mb" id="logMBody"></div>
-      <div class="mf"><button class="mbtn" onclick="closeM('log')">CLOSE</button></div>
+      <div class="mf"><button class="mbtn" id="closelogb">CLOSE</button></div>
     </div>
   </div>
 
@@ -1510,7 +1403,6 @@
       messagingSenderId: "765683549371",
       appId: "1:765683549371:web:1b28b723efa3c6b82b159e"
     };
-
     const firebaseApp = initializeApp(firebaseConfig);
     const db = getFirestore(firebaseApp);
 
@@ -1524,12 +1416,58 @@
           threshold: 30,
           unit: "celsius"
         });
-        console.log("Detection logged to Firebase ✓");
-      } catch (e) {
-        console.warn("Firebase log failed:", e.message);
-      }
+      } catch (e) { console.warn("Firebase log failed:", e.message); }
     }
-    /* FULLSCREEN */
+
+    /* ── TUNNEL CONFIG ── */
+    const TUNNEL_BASE = "https://charlotte-except-finish-carry.trycloudflare.com/fused_safety_stream/";
+    const THERMAL_URL = TUNNEL_BASE + '/thermal';
+    const POLL_INTERVAL_MS = 200;
+    const HAZARD_THRESHOLD = 30;
+
+    /* ── STATE ── */
+    let isHazard = false, acked = false, sensorConnected = false;
+    let totalDetections = 0, clearScans = 0, sec = 0;
+    let alarmInt = null, audioCtx = null, soundReady = false;
+    const GRAPH_POINTS = 120;
+    let tempHistory = Array(GRAPH_POINTS).fill(22);
+    let timelineEvents = [];
+    let lsMs = Date.now();
+
+    /* ── MODALS ── */
+    function showM(id) { document.getElementById('m-' + id).classList.add('show'); }
+    function closeM(id) { document.getElementById('m-' + id).classList.remove('show'); }
+
+    document.getElementById('pillPi').addEventListener('click', () => showM('pi'));
+    document.getElementById('pillThermal').addEventListener('click', () => showM('thermal'));
+    document.getElementById('pillCam').addEventListener('click', () => showM('cam'));
+    document.getElementById('sirenPill').addEventListener('click', () => showM('siren'));
+
+    document.getElementById('closepi').addEventListener('click', () => closeM('pi'));
+    document.getElementById('closepib').addEventListener('click', () => closeM('pi'));
+    document.getElementById('closethermal').addEventListener('click', () => closeM('thermal'));
+    document.getElementById('closethermalb').addEventListener('click', () => closeM('thermal'));
+    document.getElementById('closecam').addEventListener('click', () => closeM('cam'));
+    document.getElementById('closecamb').addEventListener('click', () => closeM('cam'));
+    document.getElementById('closesiren').addEventListener('click', () => closeM('siren'));
+    document.getElementById('closesirenb').addEventListener('click', () => closeM('siren'));
+    document.getElementById('closelog').addEventListener('click', () => closeM('log'));
+    document.getElementById('closelogb').addEventListener('click', () => closeM('log'));
+
+    document.querySelectorAll('.mbg').forEach(m =>
+      m.addEventListener('click', e => { if (e.target === m) m.classList.remove('show'); })
+    );
+
+    /* ── THEME ── */
+    function toggleTheme() {
+      const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+      document.getElementById('themeBtn').textContent = dark ? '🌙 DARK' : '☀ LIGHT';
+      setTimeout(drawGraph, 50);
+    }
+    document.getElementById('themeBtn').addEventListener('click', toggleTheme);
+
+    /* ── FULLSCREEN ── */
     function toggleFS() {
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(() => { });
@@ -1539,144 +1477,18 @@
         document.getElementById('fsBtn').textContent = '⛶ FULLSCREEN';
       }
     }
+    document.getElementById('fsBtn').addEventListener('click', toggleFS);
     document.addEventListener('keydown', e => {
       if (e.key === 'f' || e.key === 'F') toggleFS();
       if (e.key === 'Escape') document.getElementById('fsBtn').textContent = '⛶ FULLSCREEN';
     });
 
-    /* DETECTION STATS — start clean, updated by real events only */
-    let totalDetections = 0, clearScans = 0;
-
-    function updateStats(type) {
-      if (type === 'alert') {
-        totalDetections++;
-        document.getElementById('statTotal').textContent = totalDetections;
-        const now = new Date();
-        document.getElementById('statLast').textContent =
-          now.toTimeString().slice(0, 5);
-      } else {
-        clearScans++;
-        document.getElementById('statClear').textContent = clearScans;
-      }
-    }
-
-    /* TEMPERATURE GRAPH */
-    const canvas = document.getElementById('tempCanvas');
-    const ctx2 = canvas.getContext('2d');
-    const GRAPH_POINTS = 120;
-    let tempHistory = Array(GRAPH_POINTS).fill(22);
-
-    function resizeCanvas() {
-      canvas.width = canvas.offsetWidth * window.devicePixelRatio || canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight * window.devicePixelRatio || canvas.offsetHeight;
-    }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    function drawGraph() {
-      const w = canvas.width, h = canvas.height;
-      const dpr = window.devicePixelRatio || 1;
-      ctx2.clearRect(0, 0, w, h);
-
-      const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-      const gridCol = dark ? 'rgba(45,62,50,0.6)' : 'rgba(180,200,185,0.5)';
-      const textCol = dark ? 'rgba(74,99,80,0.8)' : 'rgba(107,143,116,0.8)';
-
-      // threshold line at 30°C
-      const minT = 15, maxT = 45;
-      const threshY = h - (30 - minT) / (maxT - minT) * h;
-
-      // grid lines
-      ctx2.strokeStyle = gridCol; ctx2.lineWidth = dpr * .5;
-      [20, 25, 30, 35, 40].forEach(t => {
-        const y = h - (t - minT) / (maxT - minT) * h;
-        ctx2.beginPath(); ctx2.moveTo(0, y); ctx2.lineTo(w, y); ctx2.stroke();
-        ctx2.fillStyle = textCol;
-        ctx2.font = `${7 * dpr}px 'IBM Plex Mono'`;
-        ctx2.fillText(t + '°', 2, y - 2 * dpr);
-      });
-
-      // threshold highlight
-      ctx2.strokeStyle = dark ? 'rgba(239,68,68,0.4)' : 'rgba(220,38,38,0.4)';
-      ctx2.lineWidth = dpr; ctx2.setLineDash([3 * dpr, 3 * dpr]);
-      ctx2.beginPath(); ctx2.moveTo(0, threshY); ctx2.lineTo(w, threshY); ctx2.stroke();
-      ctx2.setLineDash([]);
-
-      // area fill
-      const grad = ctx2.createLinearGradient(0, 0, 0, h);
-      grad.addColorStop(0, dark ? 'rgba(239,68,68,0.25)' : 'rgba(220,38,38,0.15)');
-      grad.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx2.fillStyle = grad;
-      ctx2.beginPath();
-      tempHistory.forEach((t, i) => {
-        const x = i / (GRAPH_POINTS - 1) * w;
-        const y = h - (t - minT) / (maxT - minT) * h;
-        i === 0 ? ctx2.moveTo(x, y) : ctx2.lineTo(x, y);
-      });
-      ctx2.lineTo(w, h); ctx2.lineTo(0, h); ctx2.closePath(); ctx2.fill();
-
-      // line
-      ctx2.strokeStyle = dark ? '#2dd4bf' : '#0d9488';
-      ctx2.lineWidth = dpr * 1.5; ctx2.lineJoin = 'round';
-      ctx2.beginPath();
-      tempHistory.forEach((t, i) => {
-        const x = i / (GRAPH_POINTS - 1) * w;
-        const y = h - (t - minT) / (maxT - minT) * h;
-        i === 0 ? ctx2.moveTo(x, y) : ctx2.lineTo(x, y);
-      });
-      ctx2.stroke();
-
-      // current value dot
-      const lastT = tempHistory[tempHistory.length - 1];
-      const lastX = w, lastY = h - (lastT - minT) / (maxT - minT) * h;
-      const dotColor = lastT >= 30 ? (dark ? '#ef4444' : '#dc2626') : (dark ? '#2dd4bf' : '#0d9488');
-      ctx2.fillStyle = dotColor;
-      ctx2.beginPath(); ctx2.arc(lastX - dpr, lastY, 3 * dpr, 0, Math.PI * 2); ctx2.fill();
-    }
-    setInterval(drawGraph, 500);
-
-    /* ALERT TIMELINE */
-    let timelineEvents = [{ time: Date.now() - 864000, type: 'alert' }];
-
-    function addTimelineDot(type) {
-      timelineEvents.push({ time: Date.now(), type });
-      renderTimeline();
-    }
-    function renderTimeline() {
-      const wrap = document.getElementById('timelineWrap');
-      // remove old dots
-      wrap.querySelectorAll('.tl-dot').forEach(d => d.remove());
-      const now = Date.now();
-      const range = 60 * 60 * 1000; // 60 min
-      timelineEvents.forEach(ev => {
-        const age = now - ev.time;
-        if (age > range) return;
-        const pct = (1 - age / range) * 100;
-        const dot = document.createElement('div');
-        dot.className = 'tl-dot ' + ev.type;
-        dot.style.left = pct + '%';
-        dot.title = new Date(ev.time).toTimeString().slice(0, 8) + ' — ' + ev.type;
-        wrap.appendChild(dot);
-      });
-    }
-    renderTimeline();
-    setInterval(renderTimeline, 30000);
-
-    /* THEME */
-    function toggleTheme() {
-      const h = document.documentElement;
-      const dark = h.getAttribute('data-theme') === 'dark';
-      h.setAttribute('data-theme', dark ? 'light' : 'dark');
-      document.getElementById('themeBtn').textContent = dark ? '🌙 DARK' : '☀ LIGHT';
-      setTimeout(drawGraph, 50);
-    }
-
-    /* AUDIO */
-    let audioCtx = null, alarmInt = null, soundReady = false;
+    /* ── AUDIO ── */
     document.addEventListener('click', () => {
       if (soundReady) return;
       try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); soundReady = true; } catch (e) { }
     }, { once: true });
+
     function beep(f, d, v) {
       if (!soundReady || !audioCtx) return;
       audioCtx.resume().then(() => {
@@ -1697,78 +1509,126 @@
     }
     function stopAlarm() { if (alarmInt) { clearInterval(alarmInt); alarmInt = null; } }
 
-    /* ═══════════════════════════════════════════════════
-       THERMAL DATA — REAL API POLLING
-       ═══════════════════════════════════════════════════
-       Configure these two URLs to match Hasira's endpoints.
-       THERMAL_URL: should return JSON like:
-         {"max": 36.2, "grid": [21.1, 22.3, ...64 values]}
-       If the endpoint is not yet exposed via cloudflare,
-       use the local LAN IP e.g. "http://192.168.1.73/data"
-       ═══════════════════════════════════════════════════ */
-    // UPDATE THIS URL when tunnel changes — just change the base URL here
-    const TUNNEL_BASE = 'https://mouse-subscriber-edward-workers.trycloudflare.com';
-    const THERMAL_URL = 'http://localhost:8081/thermal';
-    const POLL_INTERVAL_MS = 200; // ~10 FPS to match the Pi's polling rate
-    const HAZARD_THRESHOLD = 30;  // °C — same as Pi's Python script
-
-    /* thermal state */
-    let isHazard = false, sensorConnected = false;
-
-    /* sensor connection status indicator */
-    function setSensorStatus(connected) {
-      sensorConnected = connected;
-      const badge = document.getElementById('alarmBadge');
-      if (!connected && !isHazard) {
-        badge.textContent = 'NO SENSOR';
-        badge.className = 'scard-badge warn';
-        document.getElementById('mMaxTemp').textContent = '—';
+    /* ── STATS ── */
+    function updateStats(type) {
+      if (type === 'alert') {
+        totalDetections++;
+        document.getElementById('statTotal').textContent = totalDetections;
+        document.getElementById('statLast').textContent = new Date().toTimeString().slice(0, 5);
+      } else {
+        clearScans++;
+        document.getElementById('statClear').textContent = clearScans;
       }
     }
 
-    /* process thermal data from sensor */
-    function renderGrid(gridArray, maxTemp) {
-      const s = maxTemp.toFixed(1) + '°C';
-      document.getElementById('mMaxTemp').textContent = s;
-      tempHistory.push(maxTemp);
-      if (tempHistory.length > GRAPH_POINTS) tempHistory.shift();
-      if (maxTemp >= HAZARD_THRESHOLD && !isHazard) triggerHazard(maxTemp);
-      if (maxTemp < HAZARD_THRESHOLD - 2 && isHazard) autoResolve(); // 2°C hysteresis
+    /* ── GRAPH ── */
+    const canvas = document.getElementById('tempCanvas');
+    const ctx2 = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = canvas.offsetWidth * (window.devicePixelRatio || 1);
+      canvas.height = canvas.offsetHeight * (window.devicePixelRatio || 1);
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    function drawGraph() {
+      const w = canvas.width, h = canvas.height, dpr = window.devicePixelRatio || 1;
+      ctx2.clearRect(0, 0, w, h);
+      const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const minT = 15, maxT = 45;
+      const threshY = h - (30 - minT) / (maxT - minT) * h;
+
+      ctx2.strokeStyle = dark ? 'rgba(45,62,50,0.6)' : 'rgba(180,200,185,0.5)';
+      ctx2.lineWidth = dpr * .5;
+      [20, 25, 30, 35, 40].forEach(t => {
+        const y = h - (t - minT) / (maxT - minT) * h;
+        ctx2.beginPath(); ctx2.moveTo(0, y); ctx2.lineTo(w, y); ctx2.stroke();
+        ctx2.fillStyle = dark ? 'rgba(74,99,80,0.8)' : 'rgba(107,143,116,0.8)';
+        ctx2.font = `${7 * dpr}px monospace`;
+        ctx2.fillText(t + '°', 2, y - 2 * dpr);
+      });
+
+      ctx2.strokeStyle = dark ? 'rgba(239,68,68,0.4)' : 'rgba(220,38,38,0.4)';
+      ctx2.lineWidth = dpr; ctx2.setLineDash([3 * dpr, 3 * dpr]);
+      ctx2.beginPath(); ctx2.moveTo(0, threshY); ctx2.lineTo(w, threshY); ctx2.stroke();
+      ctx2.setLineDash([]);
+
+      const grad = ctx2.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0, dark ? 'rgba(239,68,68,0.25)' : 'rgba(220,38,38,0.15)');
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx2.fillStyle = grad;
+      ctx2.beginPath();
+      tempHistory.forEach((t, i) => {
+        const x = i / (GRAPH_POINTS - 1) * w, y = h - (t - minT) / (maxT - minT) * h;
+        i === 0 ? ctx2.moveTo(x, y) : ctx2.lineTo(x, y);
+      });
+      ctx2.lineTo(w, h); ctx2.lineTo(0, h); ctx2.closePath(); ctx2.fill();
+
+      ctx2.strokeStyle = dark ? '#2dd4bf' : '#0d9488';
+      ctx2.lineWidth = dpr * 1.5; ctx2.lineJoin = 'round';
+      ctx2.beginPath();
+      tempHistory.forEach((t, i) => {
+        const x = i / (GRAPH_POINTS - 1) * w, y = h - (t - minT) / (maxT - minT) * h;
+        i === 0 ? ctx2.moveTo(x, y) : ctx2.lineTo(x, y);
+      });
+      ctx2.stroke();
+
+      const lastT = tempHistory[tempHistory.length - 1];
+      const lastY = h - (lastT - minT) / (maxT - minT) * h;
+      ctx2.fillStyle = lastT >= 30 ? (dark ? '#ef4444' : '#dc2626') : (dark ? '#2dd4bf' : '#0d9488');
+      ctx2.beginPath(); ctx2.arc(w - dpr, lastY, 3 * dpr, 0, Math.PI * 2); ctx2.fill();
+    }
+    setInterval(drawGraph, 500);
+
+    /* ── TIMELINE ── */
+    function addTimelineDot(type) {
+      timelineEvents.push({ time: Date.now(), type });
+      renderTimeline();
+    }
+    function renderTimeline() {
+      const wrap = document.getElementById('timelineWrap');
+      wrap.querySelectorAll('.tl-dot').forEach(d => d.remove());
+      const now = Date.now(), range = 60 * 60 * 1000;
+      timelineEvents.forEach(ev => {
+        const age = now - ev.time;
+        if (age > range) return;
+        const pct = (1 - age / range) * 100;
+        const dot = document.createElement('div');
+        dot.className = 'tl-dot ' + ev.type;
+        dot.style.left = pct + '%';
+        dot.title = new Date(ev.time).toTimeString().slice(0, 8) + ' — ' + ev.type;
+        wrap.appendChild(dot);
+      });
+    }
+    renderTimeline();
+    setInterval(renderTimeline, 30000);
+
+    /* ── LOG ── */
+    function addLog(msg, type) {
+      const l = document.getElementById('logList');
+      const t = new Date().toTimeString().slice(0, 8);
+      const e = document.createElement('div');
+      e.className = 'le ' + (type || 'info');
+      e.innerHTML = '<span class="lt">' + t + '</span>' + msg;
+      e.addEventListener('click', () => showLogM(e));
+      l.prepend(e);
+      while (l.children.length > 30) l.removeChild(l.lastChild);
+    }
+    function showLogM(el) {
+      const t = el.querySelector('.lt')?.textContent || '—';
+      const msg = el.textContent.replace(t, '').trim();
+      const isA = el.classList.contains('alert'), isW = el.classList.contains('warn');
+      document.getElementById('logMBody').innerHTML = `
+        <div class="mrow"><span class="mk">Timestamp</span><span class="mv">${t}</span></div>
+        <div class="mrow"><span class="mk">Event Type</span><span class="mv ${isA ? 'al' : isW ? 'warn' : 'ok'}">${isA ? 'HAZARD DETECTION' : isW ? 'WARNING' : 'SYSTEM INFO'}</span></div>
+        <div class="mrow"><span class="mk">Message</span><span class="mv">${msg}</span></div>
+        <div class="mrow"><span class="mk">Location</span><span class="mv">Sector A4 — Vavuniya Region</span></div>
+        <div class="mrow"><span class="mk">Storage</span><span class="mv ok">SAVED TO LOCAL DVR ✓</span></div>`;
+      showM('log');
     }
 
-    /* POLL REAL THERMAL DATA FROM PI */
-    async function pollThermal() {
-      try {
-        const res = await fetch(THERMAL_URL, {
-          signal: AbortSignal.timeout(1500) // 1.5s timeout
-        });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const data = await res.json();
-        /*
-          Expected format from Pi:
-          { "max": 36.2, "grid": [t1, t2, ... t64] }
-          If Pi returns a different format, adjust below.
-        */
-        if (!sensorConnected) {
-          setSensorStatus(true);
-          addLog('thermal sensor connected — live data active', 'info');
-        }
-        const grid = data.grid || data.temperatures || data.data || [];
-        const maxT = data.max || data.max_temp || Math.max(...grid);
-        if (grid.length === 64) renderGrid(grid, maxT);
-      } catch (err) {
-        /* endpoint not yet reachable — show waiting state, don't crash */
-        if (sensorConnected) {
-          setSensorStatus(false);
-          addLog('thermal sensor disconnected — check endpoint', 'warn');
-        }
-      }
-    }
-    setInterval(pollThermal, POLL_INTERVAL_MS);
-    pollThermal(); // immediate first call
-
-    /* ALARM */
-    let acked = false;
+    /* ── ALARM ── */
     function triggerHazard(temp) {
       if (isHazard && !acked) return;
       isHazard = true; acked = false;
@@ -1789,11 +1649,13 @@
       logToCloud(t);
       startAlarm();
     }
+
     function ackAlarm() {
       acked = true; stopAlarm();
       document.getElementById('pbLbl').textContent = 'ACKNOWLEDGED — MONITORING';
       addLog('alert acknowledged by operator', 'warn');
     }
+
     function autoResolve() {
       isHazard = false; acked = false; stopAlarm();
       document.getElementById('alarmCard').className = 'alarm-clear';
@@ -1810,11 +1672,15 @@
       addTimelineDot('info');
     }
 
-    /* CONTROLS */
+    document.getElementById('ackBtn').addEventListener('click', ackAlarm);
+
+    /* ── CONTROLS ── */
     function togCtrl(id) {
-      const el = document.getElementById(id + 'T'), st = document.getElementById(id + 'S');
+      const el = document.getElementById(id + 'T');
+      const st = document.getElementById(id + 'S');
       const on = el.classList.contains('on');
-      el.classList.toggle('on', !on); el.classList.toggle('off', on);
+      el.classList.toggle('on', !on);
+      el.classList.toggle('off', on);
       if (id === 'dvr') {
         const dot = document.getElementById('dvrDot');
         if (!on) { st.textContent = 'ACTIVE'; dot.style.display = 'inline-block'; addLog('DVR recording resumed', 'info'); }
@@ -1829,84 +1695,61 @@
       }
     }
 
-    /* LOG */
-    function addLog(msg, type) {
-      const l = document.getElementById('logList');
-      const t = new Date().toTimeString().slice(0, 8);
-      const e = document.createElement('div');
-      e.className = 'le ' + (type || 'info');
-      e.innerHTML = '<span class="lt">' + t + '</span>' + msg;
-      e.onclick = () => showLogM(e);
-      l.prepend(e);
-      while (l.children.length > 30) l.removeChild(l.lastChild);
-    }
-    function showLogM(el) {
-      const t = el.querySelector('.lt')?.textContent || '—';
-      const msg = el.textContent.replace(t, '').trim();
-      const isA = el.classList.contains('alert'), isW = el.classList.contains('warn');
-      document.getElementById('logMBody').innerHTML = `
-    <div class="mrow"><span class="mk">Timestamp</span><span class="mv">${t}</span></div>
-    <div class="mrow"><span class="mk">Event Type</span><span class="mv ${isA ? 'al' : isW ? 'warn' : 'ok'}">${isA ? 'HAZARD DETECTION' : isW ? 'WARNING' : 'SYSTEM INFO'}</span></div>
-    <div class="mrow"><span class="mk">Message</span><span class="mv">${msg}</span></div>
-    <div class="mrow"><span class="mk">Location</span><span class="mv">Sector A4 — Vavuniya Region</span></div>
-    <div class="mrow"><span class="mk">Storage</span><span class="mv ok">SAVED TO LOCAL DVR ✓</span></div>`;
-      showM('log');
-    }
-
-    /* MODALS */
-    function showM(id) { document.getElementById('m-' + id).classList.add('show') }
-    function closeM(id) { document.getElementById('m-' + id).classList.remove('show') }
-
-    /* EXPOSE TO GLOBAL SCOPE — needed because script is type=module */
-    window.toggleTheme = toggleTheme;
-    window.toggleFS = toggleFS;
-    window.ackAlarm = ackAlarm;
-    window.togCtrl = togCtrl;
-    window.showM = showM;
-    window.closeM = closeM;
-    window.showLogM = showLogM;
-
-    // Modal backdrop click to close
-    document.querySelectorAll('.mbg').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('show') }));
-
-    // Topbar buttons
-    document.getElementById('themeBtn').addEventListener('click', toggleTheme);
-    document.getElementById('fsBtn').addEventListener('click', toggleFS);
-
-    // ACK button
-    document.getElementById('ackBtn').addEventListener('click', ackAlarm);
-
-    // Toggle controls
     document.getElementById('relayT').addEventListener('click', () => togCtrl('relay'));
     document.getElementById('dvrT').addEventListener('click', () => togCtrl('dvr'));
     document.getElementById('thermalT').addEventListener('click', () => togCtrl('thermal'));
     document.getElementById('sirenT').addEventListener('click', () => togCtrl('siren'));
 
-    // Status pills — open modals
-    document.getElementById('sirenPill').addEventListener('click', () => showM('siren'));
-    document.querySelectorAll('.status-pill').forEach(pill => {
-      const fn = pill.getAttribute('onclick');
-      if (fn) {
-        pill.removeAttribute('onclick');
-        const id = fn.match(/showM\('(.+?)'\)/)?.[1];
-        if (id) pill.addEventListener('click', () => showM(id));
+    /* ── THERMAL POLLING ── */
+    function setSensorStatus(connected) {
+      sensorConnected = connected;
+      if (!connected && !isHazard) {
+        document.getElementById('alarmBadge').textContent = 'NO SENSOR';
+        document.getElementById('alarmBadge').className = 'scard-badge warn';
+        document.getElementById('mMaxTemp').textContent = '—';
       }
-    });
+    }
 
-    // Modal close buttons (✕ and CLOSE)
-    document.querySelectorAll('.mx, .mbtn').forEach(btn => {
-      const fn = btn.getAttribute('onclick');
-      if (fn) {
-        btn.removeAttribute('onclick');
-        const id = fn.match(/closeM\('(.+?)'\)/)?.[1];
-        if (id) btn.addEventListener('click', () => closeM(id));
+    async function pollThermal() {
+      try {
+        const controller = new AbortController();
+        const tid = setTimeout(() => controller.abort(), 1500);
+        const res = await fetch(THERMAL_URL, { signal: controller.signal });
+        clearTimeout(tid);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        if (!sensorConnected) {
+          setSensorStatus(true);
+          addLog('thermal sensor connected — live data active', 'info');
+        }
+        const grid = data.grid || data.temperatures || data.data || [];
+        const maxT = data.max || data.max_temp || (grid.length ? Math.max(...grid) : 22);
+        document.getElementById('mMaxTemp').textContent = maxT.toFixed(1) + '°C';
+        tempHistory.push(maxT);
+        if (tempHistory.length > GRAPH_POINTS) tempHistory.shift();
+        if (maxT >= HAZARD_THRESHOLD && !isHazard) triggerHazard(maxT);
+        if (maxT < HAZARD_THRESHOLD - 2 && isHazard) autoResolve();
+        lsMs = Date.now();
+      } catch (err) {
+        if (sensorConnected) {
+          setSensorStatus(false);
+          addLog('thermal sensor disconnected — check endpoint', 'warn');
+        }
       }
-    });
+    }
+    setInterval(pollThermal, POLL_INTERVAL_MS);
+    pollThermal();
 
-    /* TICKERS */
-    let lsMs = Date.now(), sec = 0;
-    setInterval(() => { const d = ((Date.now() - lsMs) / 1000).toFixed(1); document.getElementById('lastScan').textContent = d + 's AGO'; if (d > 0.4) lsMs = Date.now(); }, 100);
-    setInterval(() => document.getElementById('spd').textContent = (40 + Math.random() * 8).toFixed(1), 2200);
+    /* ── TICKERS ── */
+    setInterval(() => {
+      const d = ((Date.now() - lsMs) / 1000).toFixed(1);
+      document.getElementById('lastScan').textContent = d + 's AGO';
+    }, 100);
+
+    setInterval(() => {
+      document.getElementById('spd').textContent = (40 + Math.random() * 8).toFixed(1);
+    }, 2200);
+
     setInterval(() => {
       sec++;
       const h = String(Math.floor(sec / 3600)).padStart(1, '0');
@@ -1916,7 +1759,18 @@
       document.getElementById('uptime').textContent = str;
       document.getElementById('m-uptime').textContent = str;
     }, 1000);
+
+    /* ── BOTTOM TABS ── */
+    document.querySelectorAll('.btab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.btab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+      });
+    });
+
+    addLog('system initialised — awaiting sensor', 'info');
   </script>
 </body>
 
 </html>
+
